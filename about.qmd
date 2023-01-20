@@ -1,0 +1,46 @@
+---
+title: "About"
+about:
+  template: trestles
+  image: profile.jpg
+  links:
+    - icon: twitter
+      text: twitter
+      href: https://twitter.com/MaximilianHeeg
+    - icon: mastodon
+      text: Mastodon
+      href: https://mas.to/@maximilian_heeg
+    - icon: github
+      text: Github
+      href: https://github.com/maximilian-heeg
+---
+
+I am a pediatrician whose research interest lies in immunology and immunodeficiencies. My special interest is development of CD4+ and CD8+ T cells and T cell tissue residency. In my spare time I like to explore the nature with our dog.
+
+## Education
+
+-   Facharzt für Kinder- und Jugendmedizin, 2020 Landesärztekammer Baden-Württemberg
+
+-   Good clinical practice, 2016 ICH-GCP
+
+-   International Diploma for Mountain Medicine, 2014 Union Internatioal des Associations d'alpinisme (UIAA)
+
+-   MD, 2014 University of Freiburg
+
+## Experience
+
+-   **PostDoc**\
+    University of California San Diego \| Jan 2020 -- Present · California \| DFG Research Fellowship
+
+    > Analysis of transcriptional regulators of CD4 + memory differentiation
+
+-   **Fellow of the Berta-Ottenstein Programme for Clinician Scientists**\
+    University of Freiburg \| Oct 2016 -- Sep 2019 · Germany
+
+    > Distinct molecular response patterns of activating STAT3 mutations associate with penetrance of lymphoproliferation and autoimmunity
+
+-   **Recidency at the Center for Chronic Immunodeficiency**\
+    University of Freiburg \| Apr 2016 -- Jan 2020 · Germany
+
+-   **Recidency in pediatrics**\
+    University of Freiburg \| Aug 2014 -- Jan 2020 · Germany

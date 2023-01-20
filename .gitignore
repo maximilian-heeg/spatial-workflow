@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+/.quarto/
+/_site/
+
+__pycache__/
+.ipynb_checkpoints
+*.py[cod]

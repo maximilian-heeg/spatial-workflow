@@ -1,0 +1,8 @@
+---
+title: Anndata
+description: Put everything together in an Anndata object that can be used for downstream analysis.
+order: 3
+---
+
+
+As a bonus, we do the unrolling on the jelly role here too.

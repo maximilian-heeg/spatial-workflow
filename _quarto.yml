@@ -1,0 +1,52 @@
+project:
+  type: website
+
+website:
+  title: "Spatial workflow"
+  site-url: localhost
+  twitter-card: true
+  page-navigation: true
+  repo-url: todo
+  repo-actions: [edit, issue]
+  search:
+    location: sidebar
+  navbar:
+    left:
+      - href: index.qmd
+        text: "Home"
+      - text: "Workflow"
+        href: workflow/
+      - about.qmd
+      - contribute.md
+  sidebar:
+    - title: "Home"
+      contents: 
+        - index.qmd
+    - title: "Workflow"
+      search: true
+      style: "docked"
+      contents:
+        - workflow/
+        - auto: workflow/**
+
+  page-footer:
+      center:
+        - text: "About"
+          href: about.qmd
+
+format:
+  html:
+    theme:
+      light: [flatly, styles.scss]
+      dark: [darkly, styles.scss]
+    toc: true
+    code-line-numbers: false
+#    include-in-header:
+#      - umami.js
+    link-external-icon: true
+    link-external-newwindow: true
+
+editor: source
+
+execute:
+  freeze: auto
