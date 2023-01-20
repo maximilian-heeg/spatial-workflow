@@ -6,9 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Use Cellpose 2.0 to create a first cell segmentation based on the boundary stainings.">
+<meta name="author" content="Maximilian Heeg">
+<meta name="dcterms.date" content="2023-01-20">
+<meta name="description" content="Run the trained cellpose model on the entire dataset">
 
-<title>Spatial workflow - Cellpose</title>
+<title>Spatial workflow - Run Cellpose</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,25 +23,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
 }
-.hanging div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -50,10 +96,8 @@ div.csl-indent {
 <script src="../../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
-<link href="../../../workflow/cell_segmentation/cellpose/create_stack.html" rel="next">
-<link href="../../../workflow/cell_segmentation/index.html" rel="prev">
-<script src="../../../site_libs/quarto-listing/list.min.js"></script>
-<script src="../../../site_libs/quarto-listing/quarto-listing.js"></script>
+<link href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html" rel="next">
+<link href="../../../workflow/cell_segmentation/cellpose/train_model.html" rel="prev">
 <script src="../../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -84,44 +128,14 @@ div.csl-indent {
     "search-submit-button-title": "Submit"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<meta name="twitter:title" content="Spatial workflow - Cellpose">
-<meta name="twitter:description" content="Use Cellpose 2.0 to create a first cell segmentation based on the boundary stainings.">
+<meta name="twitter:title" content="Spatial workflow - Run Cellpose">
+<meta name="twitter:description" content="Run the trained cellpose model on the entire dataset">
 <meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-sidebar floating nav-fixed">
+<body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -162,7 +176,7 @@ div.csl-indent {
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Cellpose</h1>
+      <h1 class="quarto-secondary-nav-title">Run Cellpose</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -215,7 +229,7 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/cellpose/index.html" class="sidebar-item-text sidebar-link active">Cellpose</a>
+            <a href="../../../workflow/cell_segmentation/cellpose/index.html" class="sidebar-item-text sidebar-link">Cellpose</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -233,7 +247,7 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/run_cellpose.html" class="sidebar-item-text sidebar-link">Run Cellpose</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/run_cellpose.html" class="sidebar-item-text sidebar-link active">Run Cellpose</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -302,19 +316,31 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Cellpose</h1>
+<h1 class="title d-none d-lg-block">Run Cellpose</h1>
 </div>
 
 <div>
   <div class="description">
-    Use Cellpose 2.0 to create a first cell segmentation based on the boundary stainings.
+    Run the trained cellpose model on the entire dataset
   </div>
 </div>
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Maximilian Heeg </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 20, 2023</p>
+    </div>
+  </div>
   
     
   </div>
@@ -322,127 +348,87 @@ div.csl-indent {
 
 </header>
 
-<p>See the original publications for cellpose: <span class="citation" data-cites="Stringer2021NatMethods">Stringer et al. (<a href="#ref-Stringer2021NatMethods" role="doc-biblioref">2021</a>)</span> <span class="citation" data-cites="Pachitariu2022NatMethods">Pachitariu and Stringer (<a href="#ref-Pachitariu2022NatMethods" role="doc-biblioref">2022</a>)</span></p>
-<hr>
+<p>It’s a lot faster with a GPU. Check with <code>!nvidia-smi</code> if available</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os, shutil</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> cellpose <span class="im">import</span> core, utils, io, models, metrics</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> skimage.io</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tifffile</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> cellpose <span class="im">import</span> plot</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>use_GPU <span class="op">=</span> core.use_gpu()</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>yn <span class="op">=</span> [<span class="st">'NO'</span>, <span class="st">'YES'</span>]</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'&gt;&gt;&gt; GPU activated? </span><span class="sc">{</span>yn[use_GPU]<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&gt;&gt;&gt; GPU activated? NO</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># call logger_setup to have output of cellpose written</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> cellpose.io <span class="im">import</span> logger_setup</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>logger_setup()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2022-06-15 08:08:14,972 [INFO] WRITING LOG OUTPUT TO /home/mheeg/.cellpose/run.log</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> skimage.io.imread(<span class="ss">f"scratch/full_stack.tif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>img.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>(7, 2, 21673, 19821)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> models.CellposeModel(gpu<span class="op">=</span>use_GPU, </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                             pretrained_model<span class="op">=</span><span class="st">'models/Merscope_trained_on_10_images.model'</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>diameter <span class="op">=</span> model.diam_labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2022-06-15 08:08:43,670 [INFO] &gt;&gt;&gt;&gt; loading model models/Merscope_trained_on_10_images.model
+2022-06-15 08:08:43,671 [INFO] &gt;&gt;&gt;&gt; using CPU
+2022-06-15 08:08:43,890 [INFO] &gt;&gt;&gt;&gt; model diam_mean =  30.000 (ROIs rescaled to this size during training)
+2022-06-15 08:08:43,890 [INFO] &gt;&gt;&gt;&gt; model diam_labels =  26.578 (mean diameter of training ROIs)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>masks, flows, styles <span class="op">=</span> model.<span class="bu">eval</span>(img, channels<span class="op">=</span>[<span class="dv">1</span>,<span class="dv">2</span>], diameter<span class="op">=</span>diameter, do_3D<span class="op">=</span><span class="va">False</span>, stitch_threshold<span class="op">=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2022-06-15 08:08:43,985 [INFO] multi-stack tiff read in as having 7 planes 2 channels
+2022-06-15 08:09:02,844 [INFO] 0%|          | 0/7 [00:00&lt;?, ?it/s]
+2022-06-15 08:20:58,160 [INFO] 14%|#4        | 1/7 [11:55&lt;1:11:31, 715.31s/it]
+2022-06-15 08:32:38,845 [INFO] 29%|##8       | 2/7 [23:35&lt;58:53, 706.71s/it]
+2022-06-15 08:43:57,647 [INFO] 43%|####2     | 3/7 [34:54&lt;46:15, 693.97s/it]
+2022-06-15 08:56:10,219 [INFO] 57%|#####7    | 4/7 [47:07&lt;35:27, 709.21s/it]
+2022-06-15 09:08:36,963 [INFO] 71%|#######1  | 5/7 [59:34&lt;24:05, 722.74s/it]
+2022-06-15 09:19:42,747 [INFO] 86%|########5 | 6/7 [1:10:39&lt;11:43, 703.38s/it]</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this command does not work since the file is too big</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># good thing is, that we only need the masks for later, so we just save that.</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># io.masks_flows_to_seg(img, masks, flows, diameter, f"scratch/full_stack.tif", [1,2])</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>OverflowError: serializing a bytes object larger than 4 GiB requires pickle protocol 4 or higher</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>np.save(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">file</span> <span class="op">=</span> <span class="st">"cellpose_segmentation/masks.npy"</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    arr <span class="op">=</span> masks</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
 
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1674257325000" data-listing-file-modified-sort="1674257325045" data-listing-reading-time-sort="0.005">
-<div class="body">
-<a href="../../../workflow/cell_segmentation/cellpose/create_stack.html">
-<h3 class="no-anchor listing-title">
-Prepare the images
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Stack the different layers from the segmentation images into on big TIFF file that can be used for cellpose.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="../../../workflow/cell_segmentation/cellpose/create_stack.html">
-<div class="listing-date">
-Jan 20, 2023
-</div>
-<div class="listing-author">
-Maximilian Heeg
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1674257325000" data-listing-file-modified-sort="1674257325169" data-listing-reading-time-sort="0.69">
-<div class="body">
-<a href="../../../workflow/cell_segmentation/cellpose/train_model.html">
-<h3 class="no-anchor listing-title">
-Train a model
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Train a cellpose 2 model for our dataset</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="../../../workflow/cell_segmentation/cellpose/train_model.html">
-<div class="listing-date">
-Jan 20, 2023
-</div>
-<div class="listing-author">
-Maximilian Heeg
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1674257325000" data-listing-file-modified-sort="1674257325169" data-listing-reading-time-sort="0.06">
-<div class="body">
-<a href="../../../workflow/cell_segmentation/cellpose/run_cellpose.html">
-<h3 class="no-anchor listing-title">
-Run Cellpose
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Run the trained cellpose model on the entire dataset</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="../../../workflow/cell_segmentation/cellpose/run_cellpose.html">
-<div class="listing-date">
-Jan 20, 2023
-</div>
-<div class="listing-author">
-Maximilian Heeg
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1674257325000" data-listing-file-modified-sort="1674257325169" data-listing-reading-time-sort="1.43">
-<div class="body">
-<a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html">
-<h3 class="no-anchor listing-title">
-Assing transcripts to cells
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Use the segmentation mask and assign the transcripts from MerFISH and auxiliary staining to cells.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html">
-<div class="listing-date">
-Jan 20, 2023
-</div>
-<div class="listing-author">
-Maximilian Heeg
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
-<div id="ref-Pachitariu2022NatMethods" class="csl-entry" role="doc-biblioentry">
-Pachitariu, Marius, and Carsen Stringer. 2022. <span>“Cellpose 2.0: How to Train Your Own Model.”</span> <em>Nature Methods</em> 19 (12): 1634–41. <a href="https://doi.org/10.1038/s41592-022-01663-4">https://doi.org/10.1038/s41592-022-01663-4</a>.
-</div>
-<div id="ref-Stringer2021NatMethods" class="csl-entry" role="doc-biblioentry">
-Stringer, Carsen, Tim Wang, Michalis Michaelos, and Marius Pachitariu. 2021. <span>“Cellpose: A Generalist Algorithm for Cellular Segmentation.”</span> <em>Nature Methods</em> 18 (1): 100–106. <a href="https://doi.org/10.1038/s41592-020-01018-x">https://doi.org/10.1038/s41592-020-01018-x</a>.
-</div>
-</div></section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -709,13 +695,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../../workflow/cell_segmentation/index.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Cell segmentation</span>
+      <a href="../../../workflow/cell_segmentation/cellpose/train_model.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Train a model</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../../workflow/cell_segmentation/cellpose/create_stack.html" class="pagination-link">
-        <span class="nav-page-text">Prepare the images</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html" class="pagination-link">
+        <span class="nav-page-text">Assing transcripts to cells</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

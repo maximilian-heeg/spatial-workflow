@@ -1,1 +1,1 @@
-Sitemap: localhost/sitemap.xml
+Sitemap: spatial.heeg.io/sitemap.xml

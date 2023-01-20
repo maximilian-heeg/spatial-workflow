@@ -51,7 +51,9 @@ div.csl-indent {
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
 <link href="../../../workflow/cell_segmentation/baysor/script.html" rel="next">
-<link href="../../../workflow/cell_segmentation/cellpose/02_train_cellpose.html" rel="prev">
+<link href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html" rel="prev">
+<script src="../../../site_libs/quarto-listing/list.min.js"></script>
+<script src="../../../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -82,7 +84,37 @@ div.csl-indent {
     "search-submit-button-title": "Submit"
   }
 }</script>
+<script>
 
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-date','listing-title','listing-author','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-date","listing-title","listing-author","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <meta name="twitter:title" content="Spatial workflow - Baysor">
 <meta name="twitter:description" content="Improve the cellpose segmentation using the Baysor algorithm.">
@@ -158,12 +190,17 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/auxiliary/quantify.html" class="sidebar-item-text sidebar-link">Quantify</a>
+  <a href="../../../workflow/auxiliary/quantify.html" class="sidebar-item-text sidebar-link">Quantification</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../workflow/auxiliary/validation.html" class="sidebar-item-text sidebar-link">Validation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../workflow/auxiliary/Combine_Transcripts.html" class="sidebar-item-text sidebar-link">Combine with MerFISH</a>
   </div>
 </li>
       </ul>
@@ -191,22 +228,17 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/03_Segment_entire_dataset.html" class="sidebar-item-text sidebar-link">03 Segment Entire Dataset</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/train_model.html" class="sidebar-item-text sidebar-link">Train a model</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/04b_subsets for troubleshooting.html" class="sidebar-item-text sidebar-link">04b_subsets for troubleshooting</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/run_cellpose.html" class="sidebar-item-text sidebar-link">Run Cellpose</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/04_add_cell_to_transcripts.html" class="sidebar-item-text sidebar-link">Add cells to transcripts</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/02_train_cellpose.html" class="sidebar-item-text sidebar-link">Train a model</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html" class="sidebar-item-text sidebar-link">Assing transcripts to cells</a>
   </div>
 </li>
       </ul>
@@ -236,22 +268,22 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/09_unroll.html" class="sidebar-item-text sidebar-link">09 Unroll</a>
+  <a href="../../../workflow/cell_segmentation/anndata/segmentation_plots.html" class="sidebar-item-text sidebar-link">Plots for cell segmentation</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/07_Compare_Baysor_runs.html" class="sidebar-item-text sidebar-link">Compare the differente segmenations tries</a>
+  <a href="../../../workflow/cell_segmentation/anndata/compare_baysor_runs.html" class="sidebar-item-text sidebar-link">Compare the differente segmenations run</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/08_create_anndata.html" class="sidebar-item-text sidebar-link">Create the anndata object</a>
+  <a href="../../../workflow/cell_segmentation/anndata/create_anndata.html" class="sidebar-item-text sidebar-link">Create Anndata</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/06_Cell_segmentation_plots.html" class="sidebar-item-text sidebar-link">Plots for cell segmentation</a>
+  <a href="../../../workflow/cell_segmentation/anndata/unroll.html" class="sidebar-item-text sidebar-link"><em>Bonus:</em> Unrolling</a>
   </div>
 </li>
       </ul>
@@ -295,7 +327,39 @@ div.csl-indent {
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1674257325000" data-listing-file-modified-sort="1674257325045" data-listing-reading-time-sort="0.4">
+<div class="body">
+<a href="../../../workflow/cell_segmentation/baysor/script.html">
+<h3 class="no-anchor listing-title">
+Script
+</h3>
+<div class="listing-subtitle">
+
+</div>
+<div class="listing-description">
+<p>Run Baysor on the TSCC</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="../../../workflow/cell_segmentation/baysor/script.html">
+<div class="listing-date">
+Jan 20, 2023
+</div>
+<div class="listing-author">
+Maximilian Heeg
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-Petukhov2022NatBiotechnol" class="csl-entry" role="doc-biblioentry">
 Petukhov, Viktor, Rosalind J. Xu, Ruslan A. Soldatov, Paolo Cadinu, Konstantin Khodosevich, Jeffrey R. Moffitt, and Peter V. Kharchenko. 2022. <span>“Cell segmentation in imaging-based spatial transcriptomics.”</span> <em>Nature Biotechnology</em> 40 (3): 345–54. <a href="https://doi.org/10.1038/s41587-021-01044-w">https://doi.org/10.1038/s41587-021-01044-w</a>.
 </div>
@@ -547,7 +611,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/localhost/);
+      var filterRegex = new RegExp(/spatial\.heeg\.io/);
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }
@@ -566,8 +630,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../../workflow/cell_segmentation/cellpose/02_train_cellpose.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Train a model</span>
+      <a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Assing transcripts to cells</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

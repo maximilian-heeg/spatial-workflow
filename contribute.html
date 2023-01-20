@@ -120,7 +120,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#via-github" id="toc-via-github" class="nav-link active" data-scroll-target="#via-github">Via Github</a></li>
   <li><a href="#via-mail" id="toc-via-mail" class="nav-link" data-scroll-target="#via-mail">Via Mail</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-git"></i></div><div class="action-links"><p><a href="todo/edit/main/contribute.md" class="toc-action">Edit this page</a></p><p><a href="todo/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/maximilian-heeg/spatial-workflow/edit/main/contribute.md" class="toc-action">Edit this page</a></p><p><a href="https://github.com/maximilian-heeg/spatial-workflow/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -149,7 +149,7 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="via-github" class="level2">
 <h2 class="anchored" data-anchor-id="via-github">Via Github</h2>
-<p>Clone the repository, add a protocol in markdown format and push it. The website in build automatically after every push. The link to the github repo is <a href="https://github.com/maximilian-heeg/protocols.heeg.io">github.com/maximilian-heeg/protocols.heeg.io</a>. Currently this repository is private, so message me if you want access.</p>
+<p>Clone the repository, add a protocol in markdown format and push it. The website in build automatically after every push. The link to the github repo is <a href="https://github.com/maximilian-heeg/spatial-workflow">github.com/maximilian-heeg/spatial-workflow</a>.</p>
 <p>If you see a mistake, you can modify the current site my clicking on <code>Edit this page</code> on the right side of each site.</p>
 <p>The website is generated using quarto. See their <a href="https://quarto.org">website</a> to learn more about the structure of the webpage.</p>
 </section>
@@ -408,7 +408,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/localhost/);
+      var filterRegex = new RegExp(/spatial\.heeg\.io/);
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }

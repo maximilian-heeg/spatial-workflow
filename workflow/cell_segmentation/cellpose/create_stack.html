@@ -6,6 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Maximilian Heeg">
+<meta name="dcterms.date" content="2023-01-20">
+<meta name="description" content="Stack the different layers from the segmentation images into on big TIFF file that can be used for cellpose.">
 
 <title>Spatial workflow - Prepare the images</title>
 <style>
@@ -93,7 +96,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
-<link href="../../../workflow/cell_segmentation/cellpose/03_Segment_entire_dataset.html" rel="next">
+<link href="../../../workflow/cell_segmentation/cellpose/train_model.html" rel="next">
 <link href="../../../workflow/cell_segmentation/cellpose/index.html" rel="prev">
 <script src="../../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
@@ -128,6 +131,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <meta name="twitter:title" content="Spatial workflow - Prepare the images">
+<meta name="twitter:description" content="Stack the different layers from the segmentation images into on big TIFF file that can be used for cellpose.">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -200,12 +204,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/auxiliary/quantify.html" class="sidebar-item-text sidebar-link">Quantify</a>
+  <a href="../../../workflow/auxiliary/quantify.html" class="sidebar-item-text sidebar-link">Quantification</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../workflow/auxiliary/validation.html" class="sidebar-item-text sidebar-link">Validation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../workflow/auxiliary/Combine_Transcripts.html" class="sidebar-item-text sidebar-link">Combine with MerFISH</a>
   </div>
 </li>
       </ul>
@@ -233,22 +242,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/03_Segment_entire_dataset.html" class="sidebar-item-text sidebar-link">03 Segment Entire Dataset</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/train_model.html" class="sidebar-item-text sidebar-link">Train a model</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/04b_subsets for troubleshooting.html" class="sidebar-item-text sidebar-link">04b_subsets for troubleshooting</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/run_cellpose.html" class="sidebar-item-text sidebar-link">Run Cellpose</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/04_add_cell_to_transcripts.html" class="sidebar-item-text sidebar-link">Add cells to transcripts</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/02_train_cellpose.html" class="sidebar-item-text sidebar-link">Train a model</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html" class="sidebar-item-text sidebar-link">Assing transcripts to cells</a>
   </div>
 </li>
       </ul>
@@ -278,22 +282,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/09_unroll.html" class="sidebar-item-text sidebar-link">09 Unroll</a>
+  <a href="../../../workflow/cell_segmentation/anndata/segmentation_plots.html" class="sidebar-item-text sidebar-link">Plots for cell segmentation</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/07_Compare_Baysor_runs.html" class="sidebar-item-text sidebar-link">Compare the differente segmenations tries</a>
+  <a href="../../../workflow/cell_segmentation/anndata/compare_baysor_runs.html" class="sidebar-item-text sidebar-link">Compare the differente segmenations run</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/08_create_anndata.html" class="sidebar-item-text sidebar-link">Create the anndata object</a>
+  <a href="../../../workflow/cell_segmentation/anndata/create_anndata.html" class="sidebar-item-text sidebar-link">Create Anndata</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/06_Cell_segmentation_plots.html" class="sidebar-item-text sidebar-link">Plots for cell segmentation</a>
+  <a href="../../../workflow/cell_segmentation/anndata/unroll.html" class="sidebar-item-text sidebar-link"><em>Bonus:</em> Unrolling</a>
   </div>
 </li>
       </ul>
@@ -315,11 +319,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 class="title d-none d-lg-block">Prepare the images</h1>
 </div>
 
+<div>
+  <div class="description">
+    Stack the different layers from the segmentation images into on big TIFF file that can be used for cellpose.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Maximilian Heeg </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 20, 2023</p>
+    </div>
+  </div>
   
     
   </div>
@@ -882,7 +903,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/localhost/);
+      var filterRegex = new RegExp(/spatial\.heeg\.io/);
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }
@@ -906,8 +927,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../../workflow/cell_segmentation/cellpose/03_Segment_entire_dataset.html" class="pagination-link">
-        <span class="nav-page-text">03 Segment Entire Dataset</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../../workflow/cell_segmentation/cellpose/train_model.html" class="pagination-link">
+        <span class="nav-page-text">Train a model</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

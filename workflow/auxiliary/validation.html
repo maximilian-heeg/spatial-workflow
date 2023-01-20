@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Maximilian Heeg">
+<meta name="dcterms.date" content="2023-01-20">
+<meta name="description" content="Check that everything worked as expected and that the number of transcripts seems reasonable">
 
-<title>Spatial workflow – validation</title>
+<title>Spatial workflow - Validation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -93,7 +96,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
-<link href="../../workflow/cell_segmentation/index.html" rel="next">
+<link href="../../workflow/auxiliary/Combine_Transcripts.html" rel="next">
 <link href="../../workflow/auxiliary/quantify.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
@@ -127,6 +130,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 }</script>
 
 
+<meta name="twitter:title" content="Spatial workflow - Validation">
+<meta name="twitter:description" content="Check that everything worked as expected and that the number of transcripts seems reasonable">
+<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-sidebar floating nav-fixed">
@@ -170,7 +176,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"></h1>
+      <h1 class="quarto-secondary-nav-title">Validation</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -198,12 +204,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../workflow/auxiliary/quantify.html" class="sidebar-item-text sidebar-link">Quantify</a>
+  <a href="../../workflow/auxiliary/quantify.html" class="sidebar-item-text sidebar-link">Quantification</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../workflow/auxiliary/validation.html" class="sidebar-item-text sidebar-link active">Validation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../workflow/auxiliary/Combine_Transcripts.html" class="sidebar-item-text sidebar-link">Combine with MerFISH</a>
   </div>
 </li>
       </ul>
@@ -231,22 +242,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../workflow/cell_segmentation/cellpose/03_Segment_entire_dataset.html" class="sidebar-item-text sidebar-link">03 Segment Entire Dataset</a>
+  <a href="../../workflow/cell_segmentation/cellpose/train_model.html" class="sidebar-item-text sidebar-link">Train a model</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../workflow/cell_segmentation/cellpose/04b_subsets for troubleshooting.html" class="sidebar-item-text sidebar-link">04b_subsets for troubleshooting</a>
+  <a href="../../workflow/cell_segmentation/cellpose/run_cellpose.html" class="sidebar-item-text sidebar-link">Run Cellpose</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../workflow/cell_segmentation/cellpose/04_add_cell_to_transcripts.html" class="sidebar-item-text sidebar-link">Add cells to transcripts</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../workflow/cell_segmentation/cellpose/02_train_cellpose.html" class="sidebar-item-text sidebar-link">Train a model</a>
+  <a href="../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html" class="sidebar-item-text sidebar-link">Assing transcripts to cells</a>
   </div>
 </li>
       </ul>
@@ -276,22 +282,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../workflow/cell_segmentation/anndata/09_unroll.html" class="sidebar-item-text sidebar-link">09 Unroll</a>
+  <a href="../../workflow/cell_segmentation/anndata/segmentation_plots.html" class="sidebar-item-text sidebar-link">Plots for cell segmentation</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../workflow/cell_segmentation/anndata/07_Compare_Baysor_runs.html" class="sidebar-item-text sidebar-link">Compare the differente segmenations tries</a>
+  <a href="../../workflow/cell_segmentation/anndata/compare_baysor_runs.html" class="sidebar-item-text sidebar-link">Compare the differente segmenations run</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../workflow/cell_segmentation/anndata/08_create_anndata.html" class="sidebar-item-text sidebar-link">Create the anndata object</a>
+  <a href="../../workflow/cell_segmentation/anndata/create_anndata.html" class="sidebar-item-text sidebar-link">Create Anndata</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../workflow/cell_segmentation/anndata/06_Cell_segmentation_plots.html" class="sidebar-item-text sidebar-link">Plots for cell segmentation</a>
+  <a href="../../workflow/cell_segmentation/anndata/unroll.html" class="sidebar-item-text sidebar-link"><em>Bonus:</em> Unrolling</a>
   </div>
 </li>
       </ul>
@@ -308,7 +314,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Validation</h1>
+</div>
 
+<div>
+  <div class="description">
+    Check that everything worked as expected and that the number of transcripts seems reasonable
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Maximilian Heeg </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 20, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
 
 <p>Overlay of the MERSFISH Transcripts and the Auxiliary stain transcripts to see, that everything worked as expected…. hopefully</p>
 <div class="cell" data-execution_count="1">
@@ -623,7 +661,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/localhost/);
+      var filterRegex = new RegExp(/spatial\.heeg\.io/);
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }
@@ -643,12 +681,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../../workflow/auxiliary/quantify.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Quantify</span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Quantification</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../workflow/cell_segmentation/index.html" class="pagination-link">
-        <span class="nav-page-text">Cell segmentation</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../workflow/auxiliary/Combine_Transcripts.html" class="pagination-link">
+        <span class="nav-page-text">Combine with MerFISH</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -31,7 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
 <link href="../../workflow/cell_segmentation/cellpose/index.html" rel="next">
-<link href="../../workflow/auxiliary/validation.html" rel="prev">
+<link href="../../workflow/auxiliary/Combine_Transcripts.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -65,6 +65,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <meta name="twitter:title" content="Spatial workflow - Cell segmentation">
+<meta name="twitter:description" content="Our two step approach includes cellpose and baysor.">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -137,12 +138,17 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../workflow/auxiliary/quantify.html" class="sidebar-item-text sidebar-link">Quantify</a>
+  <a href="../../workflow/auxiliary/quantify.html" class="sidebar-item-text sidebar-link">Quantification</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../workflow/auxiliary/validation.html" class="sidebar-item-text sidebar-link">Validation</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../workflow/auxiliary/Combine_Transcripts.html" class="sidebar-item-text sidebar-link">Combine with MerFISH</a>
   </div>
 </li>
       </ul>
@@ -170,22 +176,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../workflow/cell_segmentation/cellpose/03_Segment_entire_dataset.html" class="sidebar-item-text sidebar-link">03 Segment Entire Dataset</a>
+  <a href="../../workflow/cell_segmentation/cellpose/train_model.html" class="sidebar-item-text sidebar-link">Train a model</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../workflow/cell_segmentation/cellpose/04b_subsets for troubleshooting.html" class="sidebar-item-text sidebar-link">04b_subsets for troubleshooting</a>
+  <a href="../../workflow/cell_segmentation/cellpose/run_cellpose.html" class="sidebar-item-text sidebar-link">Run Cellpose</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../workflow/cell_segmentation/cellpose/04_add_cell_to_transcripts.html" class="sidebar-item-text sidebar-link">Add cells to transcripts</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../workflow/cell_segmentation/cellpose/02_train_cellpose.html" class="sidebar-item-text sidebar-link">Train a model</a>
+  <a href="../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html" class="sidebar-item-text sidebar-link">Assing transcripts to cells</a>
   </div>
 </li>
       </ul>
@@ -215,22 +216,22 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../workflow/cell_segmentation/anndata/09_unroll.html" class="sidebar-item-text sidebar-link">09 Unroll</a>
+  <a href="../../workflow/cell_segmentation/anndata/segmentation_plots.html" class="sidebar-item-text sidebar-link">Plots for cell segmentation</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../workflow/cell_segmentation/anndata/07_Compare_Baysor_runs.html" class="sidebar-item-text sidebar-link">Compare the differente segmenations tries</a>
+  <a href="../../workflow/cell_segmentation/anndata/compare_baysor_runs.html" class="sidebar-item-text sidebar-link">Compare the differente segmenations run</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../workflow/cell_segmentation/anndata/08_create_anndata.html" class="sidebar-item-text sidebar-link">Create the anndata object</a>
+  <a href="../../workflow/cell_segmentation/anndata/create_anndata.html" class="sidebar-item-text sidebar-link">Create Anndata</a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../workflow/cell_segmentation/anndata/06_Cell_segmentation_plots.html" class="sidebar-item-text sidebar-link">Plots for cell segmentation</a>
+  <a href="../../workflow/cell_segmentation/anndata/unroll.html" class="sidebar-item-text sidebar-link"><em>Bonus:</em> Unrolling</a>
   </div>
 </li>
       </ul>
@@ -264,6 +265,12 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<p>Our two step approach includes cellpose and baysor.</p>
+<ul>
+<li><a href="../../workflow/cell_segmentation/cellpose/index.html">Cellpose</a> creates a segmentation based on the image data.</li>
+<li><a href="../../workflow/cell_segmentation/baysor/index.html">Baysor</a> then used the transcript neighboorhood to refine the segmentation.</li>
+</ul>
+<p>Lastly, we put everything together in an <a href="../../workflow/cell_segmentation/anndata/index.html">Anndata object</a> that can be used for downstream analysis.</p>
 
 
 
@@ -515,7 +522,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/localhost/);
+      var filterRegex = new RegExp(/spatial\.heeg\.io/);
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }
@@ -534,8 +541,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../workflow/auxiliary/validation.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Validation</span>
+      <a href="../../workflow/auxiliary/Combine_Transcripts.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Combine with MerFISH</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

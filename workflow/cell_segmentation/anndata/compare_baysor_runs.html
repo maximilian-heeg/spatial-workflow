@@ -6,9 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Use Cellpose 2.0 to create a first cell segmentation based on the boundary stainings.">
+<meta name="author" content="Maximilian Heeg">
+<meta name="dcterms.date" content="2023-01-20">
+<meta name="description" content="If you tried Baysor with various settings, you can compare the runs here.">
 
-<title>Spatial workflow - Cellpose</title>
+<title>Spatial workflow - Compare the differente segmenations run</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,25 +23,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
 }
-.hanging div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -50,10 +96,8 @@ div.csl-indent {
 <script src="../../../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../../">
-<link href="../../../workflow/cell_segmentation/cellpose/create_stack.html" rel="next">
-<link href="../../../workflow/cell_segmentation/index.html" rel="prev">
-<script src="../../../site_libs/quarto-listing/list.min.js"></script>
-<script src="../../../site_libs/quarto-listing/quarto-listing.js"></script>
+<link href="../../../workflow/cell_segmentation/anndata/create_anndata.html" rel="next">
+<link href="../../../workflow/cell_segmentation/anndata/segmentation_plots.html" rel="prev">
 <script src="../../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -84,44 +128,14 @@ div.csl-indent {
     "search-submit-button-title": "Submit"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-description"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<meta name="twitter:title" content="Spatial workflow - Cellpose">
-<meta name="twitter:description" content="Use Cellpose 2.0 to create a first cell segmentation based on the boundary stainings.">
+<meta name="twitter:title" content="Spatial workflow - Compare the differente segmenations run">
+<meta name="twitter:description" content="If you tried Baysor with various settings, you can compare the runs here.">
 <meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-sidebar floating nav-fixed">
+<body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -162,7 +176,7 @@ div.csl-indent {
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Cellpose</h1>
+      <h1 class="quarto-secondary-nav-title">Compare the differente segmenations run</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -215,12 +229,12 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/cellpose/index.html" class="sidebar-item-text sidebar-link active">Cellpose</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a href="../../../workflow/cell_segmentation/cellpose/index.html" class="sidebar-item-text sidebar-link">Cellpose</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../workflow/cell_segmentation/cellpose/create_stack.html" class="sidebar-item-text sidebar-link">Prepare the images</a>
@@ -261,11 +275,11 @@ div.csl-indent {
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../../../workflow/cell_segmentation/anndata/index.html" class="sidebar-item-text sidebar-link">Anndata</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../../workflow/cell_segmentation/anndata/segmentation_plots.html" class="sidebar-item-text sidebar-link">Plots for cell segmentation</a>
@@ -273,7 +287,7 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/compare_baysor_runs.html" class="sidebar-item-text sidebar-link">Compare the differente segmenations run</a>
+  <a href="../../../workflow/cell_segmentation/anndata/compare_baysor_runs.html" class="sidebar-item-text sidebar-link active">Compare the differente segmenations run</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -302,19 +316,31 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Cellpose</h1>
+<h1 class="title d-none d-lg-block">Compare the differente segmenations run</h1>
 </div>
 
 <div>
   <div class="description">
-    Use Cellpose 2.0 to create a first cell segmentation based on the boundary stainings.
+    If you tried Baysor with various settings, you can compare the runs here.
   </div>
 </div>
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Maximilian Heeg </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 20, 2023</p>
+    </div>
+  </div>
   
     
   </div>
@@ -322,127 +348,85 @@ div.csl-indent {
 
 </header>
 
-<p>See the original publications for cellpose: <span class="citation" data-cites="Stringer2021NatMethods">Stringer et al. (<a href="#ref-Stringer2021NatMethods" role="doc-biblioref">2021</a>)</span> <span class="citation" data-cites="Pachitariu2022NatMethods">Pachitariu and Stringer (<a href="#ref-Pachitariu2022NatMethods" role="doc-biblioref">2022</a>)</span></p>
-<hr>
+<p>In our first experiment, we tested many <code>mol_per_cell</code> settings. In the later runs, we just took <code>30</code> since this seems to be a good value.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> pltgeopandas.GeoSeries(</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>versions <span class="op">=</span> [<span class="dv">30</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> diagnostic_plots(transcripts, title, ax1, ax2, ax3):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># how many transcripts are assigned to a cell</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    transcript_in_cell <span class="op">=</span> (transcripts.cell <span class="op">&gt;</span> <span class="dv">0</span>).value_counts()</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    ax1.pie(transcript_in_cell, explode<span class="op">=</span>[<span class="fl">0.1</span>, <span class="dv">0</span>], labels<span class="op">=</span>[<span class="st">'in cell'</span>, <span class="st">'not in cell'</span>], </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>           autopct<span class="op">=</span><span class="st">'</span><span class="sc">%1.1f%%</span><span class="st">'</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>            startangle<span class="op">=</span><span class="dv">90</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    ax1.axis(<span class="st">'equal'</span>) <span class="co"># to make a circle</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    ax1.set_title(<span class="ss">f"Transcripts assigned to cell </span><span class="ch">\n</span><span class="ss"> total: </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">max</span>(transcripts.cell)<span class="sc">}</span><span class="ss"> cells"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># how many transcripts per cell</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    transcripts_per_cell <span class="op">=</span> transcripts[transcripts.cell <span class="op">&gt;</span> <span class="dv">0</span>].groupby(<span class="st">"cell"</span>).size()</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    ax2.hist(np.log10(transcripts_per_cell), bins<span class="op">=</span><span class="dv">50</span>, rwidth<span class="op">=</span><span class="fl">0.9</span>,color<span class="op">=</span><span class="st">'#607c8e'</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    add_mean_and_median(transcripts_per_cell, ax2, fn <span class="op">=</span> <span class="kw">lambda</span> x:np.log10(x))</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    ax2.set_xlabel(<span class="vs">r"$log_</span><span class="sc">{10}</span><span class="vs">(Transcripts\ per\ cell)$"</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    ax2.set_ylabel(<span class="vs">r"$cells$"</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    ax2.set_title(<span class="ss">f"Transcripts per cell</span><span class="ch">\n</span><span class="ss">m = </span><span class="sc">{</span>title<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># np.log10(transcripts[transcripts.cell &gt; 0].groupby("cell").size()).plot.hist(grid=True, bins=50, rwidth=0.9,color='#607c8e')</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># how many features per cell</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    features_per_cell <span class="op">=</span> transcripts[transcripts.cell <span class="op">&gt;</span> <span class="dv">0</span>].groupby(<span class="st">"cell"</span>)[<span class="st">'gene'</span>].nunique()</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    ax3.hist(features_per_cell, bins<span class="op">=</span><span class="dv">50</span>, rwidth<span class="op">=</span><span class="fl">0.9</span>,color<span class="op">=</span><span class="st">'#607c8e'</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    add_mean_and_median(features_per_cell, ax3)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    ax3.set_xlabel(<span class="vs">r"$Features\ per\ cell$"</span>)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    ax3.set_ylabel(<span class="vs">r"$cells$"</span>)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    ax3.set_title(<span class="st">"Features per cell"</span>)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>(ax1, ax2, ax3)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_mean_and_median(values, ax, fn <span class="op">=</span> <span class="kw">lambda</span> x:x):</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    mean <span class="op">=</span> values.mean()</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    median <span class="op">=</span> values.median()</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    ax.axvline(fn(mean), color<span class="op">=</span><span class="st">'k'</span>, linestyle<span class="op">=</span><span class="st">'dashed'</span>, linewidth<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    ax.axvline(fn(median), color<span class="op">=</span><span class="st">'m'</span>, linestyle<span class="op">=</span><span class="st">'dashed'</span>, linewidth<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    min_ylim, max_ylim <span class="op">=</span> ax.get_ylim()</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    xpos <span class="op">=</span> <span class="bu">max</span>(fn(mean)<span class="op">*</span><span class="fl">1.1</span>, fn(median)<span class="op">*</span><span class="fl">1.1</span>)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    ax.text(xpos, max_ylim<span class="op">*</span><span class="fl">0.9</span>, <span class="st">'Mean: </span><span class="sc">{:.2f}</span><span class="ch">\n</span><span class="st">Median: </span><span class="sc">{:.2f}</span><span class="st">'</span>.<span class="bu">format</span>(mean, median))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>nrows <span class="op">=</span> <span class="bu">len</span>(versions)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize <span class="op">=</span> (<span class="dv">14</span>,<span class="dv">4</span><span class="op">*</span>nrows))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(nrows):</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    v <span class="op">=</span> versions[i]</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"&gt;&gt;&gt; making plots for m = </span><span class="sc">{</span>v<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    ax1 <span class="op">=</span> fig.add_subplot(nrows,<span class="dv">3</span>,<span class="dv">1</span><span class="op">+</span>i<span class="op">*</span><span class="dv">3</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    ax2 <span class="op">=</span> fig.add_subplot(nrows,<span class="dv">3</span>,<span class="dv">2</span><span class="op">+</span>i<span class="op">*</span><span class="dv">3</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    ax3 <span class="op">=</span> fig.add_subplot(nrows,<span class="dv">3</span>,<span class="dv">3</span><span class="op">+</span>i<span class="op">*</span><span class="dv">3</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    transcripts <span class="op">=</span> pd.read_csv(<span class="st">"baysor_"</span><span class="op">+</span><span class="bu">str</span>(v)<span class="op">+</span><span class="st">"_mol_per_cell/segmentation.csv"</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    ax1, ax3, ax3 <span class="op">=</span> diagnostic_plots(transcripts, v, ax1, ax2, ax3)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>fig.tight_layout(h_pad<span class="op">=</span><span class="fl">1.1</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>fig.savefig(<span class="st">'07_diagnostic_plots.jpg'</span>, dpi <span class="op">=</span> <span class="dv">100</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&gt;&gt;&gt; making plots for m = 30</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07_Compare_Baysor_runs_files/figure-html/cell-5-output-2.png" class="img-fluid"></p>
+</div>
+</div>
 
 
 
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-listing-date-sort="1674257325000" data-listing-file-modified-sort="1674257325045" data-listing-reading-time-sort="0.005">
-<div class="body">
-<a href="../../../workflow/cell_segmentation/cellpose/create_stack.html">
-<h3 class="no-anchor listing-title">
-Prepare the images
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Stack the different layers from the segmentation images into on big TIFF file that can be used for cellpose.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="../../../workflow/cell_segmentation/cellpose/create_stack.html">
-<div class="listing-date">
-Jan 20, 2023
-</div>
-<div class="listing-author">
-Maximilian Heeg
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-listing-date-sort="1674257325000" data-listing-file-modified-sort="1674257325169" data-listing-reading-time-sort="0.69">
-<div class="body">
-<a href="../../../workflow/cell_segmentation/cellpose/train_model.html">
-<h3 class="no-anchor listing-title">
-Train a model
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Train a cellpose 2 model for our dataset</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="../../../workflow/cell_segmentation/cellpose/train_model.html">
-<div class="listing-date">
-Jan 20, 2023
-</div>
-<div class="listing-author">
-Maximilian Heeg
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-listing-date-sort="1674257325000" data-listing-file-modified-sort="1674257325169" data-listing-reading-time-sort="0.06">
-<div class="body">
-<a href="../../../workflow/cell_segmentation/cellpose/run_cellpose.html">
-<h3 class="no-anchor listing-title">
-Run Cellpose
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Run the trained cellpose model on the entire dataset</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="../../../workflow/cell_segmentation/cellpose/run_cellpose.html">
-<div class="listing-date">
-Jan 20, 2023
-</div>
-<div class="listing-author">
-Maximilian Heeg
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-listing-date-sort="1674257325000" data-listing-file-modified-sort="1674257325169" data-listing-reading-time-sort="1.43">
-<div class="body">
-<a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html">
-<h3 class="no-anchor listing-title">
-Assing transcripts to cells
-</h3>
-<div class="listing-subtitle">
-
-</div>
-<div class="listing-description">
-<p>Use the segmentation mask and assign the transcripts from MerFISH and auxiliary staining to cells.</p>
-</div>
-</a>
-</div>
-<div class="metadata">
-<a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html">
-<div class="listing-date">
-Jan 20, 2023
-</div>
-<div class="listing-author">
-Maximilian Heeg
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
-<div id="ref-Pachitariu2022NatMethods" class="csl-entry" role="doc-biblioentry">
-Pachitariu, Marius, and Carsen Stringer. 2022. <span>“Cellpose 2.0: How to Train Your Own Model.”</span> <em>Nature Methods</em> 19 (12): 1634–41. <a href="https://doi.org/10.1038/s41592-022-01663-4">https://doi.org/10.1038/s41592-022-01663-4</a>.
-</div>
-<div id="ref-Stringer2021NatMethods" class="csl-entry" role="doc-biblioentry">
-Stringer, Carsen, Tim Wang, Michalis Michaelos, and Marius Pachitariu. 2021. <span>“Cellpose: A Generalist Algorithm for Cellular Segmentation.”</span> <em>Nature Methods</em> 18 (1): 100–106. <a href="https://doi.org/10.1038/s41592-020-01018-x">https://doi.org/10.1038/s41592-020-01018-x</a>.
-</div>
-</div></section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -709,13 +693,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../../workflow/cell_segmentation/index.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Cell segmentation</span>
+      <a href="../../../workflow/cell_segmentation/anndata/segmentation_plots.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Plots for cell segmentation</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../../workflow/cell_segmentation/cellpose/create_stack.html" class="pagination-link">
-        <span class="nav-page-text">Prepare the images</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../../workflow/cell_segmentation/anndata/create_anndata.html" class="pagination-link">
+        <span class="nav-page-text">Create Anndata</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

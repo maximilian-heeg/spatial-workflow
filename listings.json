@@ -1,0 +1,34 @@
+[
+  {
+    "listing": "/workflow/cell_segmentation/anndata/index.html",
+    "items": [
+      "/workflow/cell_segmentation/anndata/segmentation_plots.html",
+      "/workflow/cell_segmentation/anndata/compare_baysor_runs.html",
+      "/workflow/cell_segmentation/anndata/create_anndata.html",
+      "/workflow/cell_segmentation/anndata/unroll.html"
+    ]
+  },
+  {
+    "listing": "/workflow/cell_segmentation/cellpose/index.html",
+    "items": [
+      "/workflow/cell_segmentation/cellpose/create_stack.html",
+      "/workflow/cell_segmentation/cellpose/train_model.html",
+      "/workflow/cell_segmentation/cellpose/run_cellpose.html",
+      "/workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html"
+    ]
+  },
+  {
+    "listing": "/workflow/cell_segmentation/baysor/index.html",
+    "items": [
+      "/workflow/cell_segmentation/baysor/script.html"
+    ]
+  },
+  {
+    "listing": "/workflow/auxiliary/index.html",
+    "items": [
+      "/workflow/auxiliary/quantify.html",
+      "/workflow/auxiliary/validation.html",
+      "/workflow/auxiliary/Combine_Transcripts.html"
+    ]
+  }
+]
