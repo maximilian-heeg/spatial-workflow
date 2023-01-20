@@ -1,7 +1,14 @@
 ---
-title: "spatial"
+title: "Spatial workflow"
+subtitle: ""
 ---
 
-## Quarto
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+Welcome to our website, where we aim to provide a overview of our workflow to analyze spatial transcriptomics. Please be aware that this website is still under construction, and we make no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability or availability of the information provided here.
+
+
+![Quantification of the auxiliary staining in the small intestine](images/spatial.png)
+
+## Getting started
+
+Read about our approaches for cell segmentation [here](workflow/index.qmd)

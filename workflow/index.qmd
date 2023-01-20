@@ -5,4 +5,15 @@ description: "Subtitle"
 
 
 
-### [Part 1: Quanitufy auxiliary stainings](auxiliary/index.qmd)
+### Part 1: [Quanitufy auxiliary stainings](auxiliary/index.qmd)
+
+We will identify transcripts on the FISH images (sequential imaing rounds of the MERSCOPE run) and combine that with the MerFISH detected transcripts.
+
+### Part 2: [Cell segmentation](cell_segmentation/index.qmd)
+
+Our two step approach includes cellpose and baysor.
+
+- [Cellpose](cell_segmentation/cellpose/index.qmd) creates a segmentation based on the image data. 
+- [Baysor](cell_segmentation/baysor/index.qmd) then used the transcript neighboorhood to refine the segmentation.
+
+Lastly, we put everything together in an [Anndata object](cell_segmentation/anndata/index.qmd) that can be used for downstream analysis.

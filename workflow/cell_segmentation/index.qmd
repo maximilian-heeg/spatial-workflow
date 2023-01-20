@@ -1,5 +1,13 @@
 ---
 title: Cell segmentation
 order: 2
+
 ---
- 
+
+
+Our two step approach includes cellpose and baysor.
+
+- [Cellpose](cellpose/index.qmd) creates a segmentation based on the image data. 
+- [Baysor](baysor/index.qmd) then used the transcript neighboorhood to refine the segmentation.
+
+Lastly, we put everything together in an [Anndata object](anndata/index.qmd) that can be used for downstream analysis.

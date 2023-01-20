@@ -6,7 +6,7 @@ description: "Want to get involved? Check out some information here."
 
 ## Via Github
 
-Clone the repository, add a protocol in markdown format and push it. The website in build automatically after every push. The link to the github repo is [github.com/maximilian-heeg/protocols.heeg.io](https://github.com/maximilian-heeg/protocols.heeg.io). Currently this repository is private, so message me if you want access.
+Clone the repository, add a protocol in markdown format and push it. The website in build automatically after every push. The link to the github repo is [github.com/maximilian-heeg/spatial-workflow](https://github.com/maximilian-heeg/spatial-workflow). 
 
 If you see a mistake, you can modify the current site my clicking on `Edit this page` on the right side of each site.
 

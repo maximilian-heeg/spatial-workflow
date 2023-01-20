@@ -3,10 +3,10 @@ project:
 
 website:
   title: "Spatial workflow"
-  site-url: localhost
+  site-url: spatial.heeg.io
   twitter-card: true
   page-navigation: true
-  repo-url: todo
+  repo-url: https://github.com/maximilian-heeg/spatial-workflow
   repo-actions: [edit, issue]
   search:
     location: sidebar

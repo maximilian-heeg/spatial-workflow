@@ -3,6 +3,11 @@ title: Cellpose
 description: Use Cellpose 2.0 to create a first cell segmentation based on the boundary stainings.
 order: 1
 bibliography: references.bib
+listing: 
+  type: default
 ---
 
-@Stringer2021NatMethods @Pachitariu2022NatMethods
+See the original publications for cellpose: @Stringer2021NatMethods @Pachitariu2022NatMethods
+
+
+---

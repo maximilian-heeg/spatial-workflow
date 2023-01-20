@@ -2,6 +2,8 @@
 title: Script
 description: Run Baysor on the TSCC
 order: 1
+date: last-modified
+author: Maximilian Heeg
 bibliography: references.bib
 ---
 

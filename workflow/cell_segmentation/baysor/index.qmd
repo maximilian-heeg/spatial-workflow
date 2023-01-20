@@ -3,6 +3,8 @@ title: Baysor
 description: Improve the cellpose segmentation using the Baysor algorithm.
 order: 2
 bibliography: references.bib
+listing: 
+  type: default
 ---
 
 @Petukhov2022NatBiotechnol

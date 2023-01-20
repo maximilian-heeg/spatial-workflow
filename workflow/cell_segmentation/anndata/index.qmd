@@ -2,6 +2,8 @@
 title: Anndata
 description: Put everything together in an Anndata object that can be used for downstream analysis.
 order: 3
+listing: 
+  type: default
 ---
 
 

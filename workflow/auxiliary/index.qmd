@@ -1,13 +1,10 @@
 ---
 title: Quantify auxilliary stainings
 order: 1
+listing: 
+  type: default
 ---
  
  
 ## Install requirements
 
-```
-
-```
-
-[Quantify](quantify.ipynb)
