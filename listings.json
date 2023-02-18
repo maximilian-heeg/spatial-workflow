@@ -1,11 +1,8 @@
 [
   {
-    "listing": "/workflow/cell_segmentation/anndata/index.html",
+    "listing": "/workflow/cell_segmentation/baysor/index.html",
     "items": [
-      "/workflow/cell_segmentation/anndata/segmentation_plots.html",
-      "/workflow/cell_segmentation/anndata/compare_baysor_runs.html",
-      "/workflow/cell_segmentation/anndata/create_anndata.html",
-      "/workflow/cell_segmentation/anndata/unroll.html"
+      "/workflow/cell_segmentation/baysor/script.html"
     ]
   },
   {
@@ -18,9 +15,12 @@
     ]
   },
   {
-    "listing": "/workflow/cell_segmentation/baysor/index.html",
+    "listing": "/workflow/cell_segmentation/anndata/index.html",
     "items": [
-      "/workflow/cell_segmentation/baysor/script.html"
+      "/workflow/cell_segmentation/anndata/segmentation_plots.html",
+      "/workflow/cell_segmentation/anndata/compare_baysor_runs.html",
+      "/workflow/cell_segmentation/anndata/create_anndata.html",
+      "/workflow/cell_segmentation/anndata/unroll.html"
     ]
   },
   {
@@ -29,6 +29,15 @@
       "/workflow/auxiliary/quantify.html",
       "/workflow/auxiliary/validation.html",
       "/workflow/auxiliary/Combine_Transcripts.html"
+    ]
+  },
+  {
+    "listing": "/workflow/analysis/index.html",
+    "items": [
+      "/workflow/analysis/qc.html",
+      "/workflow/analysis/umap.html",
+      "/workflow/analysis/anndata_zarr.html",
+      "/workflow/analysis/image_ome.html"
     ]
   }
 ]
