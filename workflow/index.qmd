@@ -1,11 +1,13 @@
 ---
 title: "Workflow"
-description: "Subtitle"
+description: "How we currently analyze the MERSCOPE data"
 ---
 
 
+![](/images/Merscope%20pipeline.png)
 
-### Part 1: [Quanitufy auxiliary stainings](auxiliary/index.qmd)
+
+### Part 1: [Quanitify auxiliary stainings](auxiliary/index.qmd)
 
 We will identify transcripts on the FISH images (sequential imaing rounds of the MERSCOPE run) and combine that with the MerFISH detected transcripts.
 
