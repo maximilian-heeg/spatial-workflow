@@ -17,3 +17,7 @@ Our two step approach includes cellpose and baysor.
 - [Baysor](cell_segmentation/baysor/index.qmd) then used the transcript neighboorhood to refine the segmentation.
 
 Lastly, we put everything together in an [Anndata object](cell_segmentation/anndata/index.qmd) that can be used for downstream analysis.
+
+### Part 3: [Analysis](analysis//index.qmd)
+
+This sections contains the scripts for QC, cell annotation and the export to ZARR and OME-TIFF that are used in the [browser](https://merscope.heeg.io)
