@@ -2,106 +2,106 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>spatial.heeg.io/about.html</loc>
-    <lastmod>2023-02-18T04:37:45.629Z</lastmod>
+    <lastmod>2023-02-25T22:12:20.611Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/index.html</loc>
-    <lastmod>2023-02-18T04:37:47.721Z</lastmod>
+    <lastmod>2023-02-25T22:12:23.003Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/cell_segmentation/baysor/script.html</loc>
-    <lastmod>2023-02-18T04:37:48.137Z</lastmod>
+    <lastmod>2023-02-25T22:12:23.551Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/cell_segmentation/baysor/index.html</loc>
-    <lastmod>2023-02-18T04:37:48.517Z</lastmod>
+    <lastmod>2023-02-25T22:12:24.043Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/cell_segmentation/cellpose/create_stack.html</loc>
-    <lastmod>2023-02-18T04:37:48.941Z</lastmod>
+    <lastmod>2023-02-25T22:12:24.595Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/cell_segmentation/cellpose/run_cellpose.html</loc>
-    <lastmod>2023-02-18T04:37:49.321Z</lastmod>
+    <lastmod>2023-02-25T22:12:25.075Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/cell_segmentation/cellpose/index.html</loc>
-    <lastmod>2023-02-18T04:37:49.809Z</lastmod>
+    <lastmod>2023-02-25T22:12:25.639Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/cell_segmentation/cellpose/train_model.html</loc>
-    <lastmod>2023-02-18T04:37:50.529Z</lastmod>
+    <lastmod>2023-02-25T22:12:26.543Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html</loc>
-    <lastmod>2023-02-18T04:37:50.989Z</lastmod>
+    <lastmod>2023-02-25T22:12:27.131Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/cell_segmentation/index.html</loc>
-    <lastmod>2023-02-18T04:37:51.333Z</lastmod>
+    <lastmod>2023-02-25T22:12:27.575Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/cell_segmentation/anndata/create_anndata.html</loc>
-    <lastmod>2023-02-18T04:37:51.925Z</lastmod>
+    <lastmod>2023-02-25T22:12:28.347Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/cell_segmentation/anndata/unroll.html</loc>
-    <lastmod>2023-02-18T04:37:52.613Z</lastmod>
+    <lastmod>2023-02-25T22:12:29.263Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/cell_segmentation/anndata/compare_baysor_runs.html</loc>
-    <lastmod>2023-02-18T04:37:53.009Z</lastmod>
+    <lastmod>2023-02-25T22:12:29.751Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/cell_segmentation/anndata/index.html</loc>
-    <lastmod>2023-02-18T04:37:53.393Z</lastmod>
+    <lastmod>2023-02-25T22:12:30.299Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/cell_segmentation/anndata/segmentation_plots.html</loc>
-    <lastmod>2023-02-18T04:37:53.929Z</lastmod>
+    <lastmod>2023-02-25T22:12:30.919Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/auxiliary/quantify.html</loc>
-    <lastmod>2023-02-18T04:37:54.309Z</lastmod>
+    <lastmod>2023-02-25T22:12:31.403Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/auxiliary/index.html</loc>
-    <lastmod>2023-02-18T04:37:54.701Z</lastmod>
+    <lastmod>2023-02-25T22:12:31.887Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/auxiliary/Combine_Transcripts.html</loc>
-    <lastmod>2023-02-18T04:37:55.093Z</lastmod>
+    <lastmod>2023-02-25T22:12:32.355Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/auxiliary/validation.html</loc>
-    <lastmod>2023-02-18T04:37:55.537Z</lastmod>
+    <lastmod>2023-02-25T22:12:32.867Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/index.html</loc>
-    <lastmod>2023-02-18T04:37:55.893Z</lastmod>
+    <lastmod>2023-02-25T22:12:33.323Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/analysis/anndata_zarr.html</loc>
-    <lastmod>2023-02-18T04:37:56.325Z</lastmod>
+    <lastmod>2023-02-25T22:12:33.911Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/analysis/image_ome.html</loc>
-    <lastmod>2023-02-18T04:37:56.753Z</lastmod>
+    <lastmod>2023-02-25T22:12:34.419Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/analysis/qc.html</loc>
-    <lastmod>2023-02-18T04:37:57.209Z</lastmod>
+    <lastmod>2023-02-25T22:12:34.975Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/analysis/umap.html</loc>
-    <lastmod>2023-02-18T04:37:58.485Z</lastmod>
+    <lastmod>2023-02-25T22:12:36.459Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/workflow/analysis/index.html</loc>
-    <lastmod>2023-02-18T04:37:58.869Z</lastmod>
+    <lastmod>2023-02-25T22:12:36.951Z</lastmod>
   </url>
   <url>
     <loc>spatial.heeg.io/contribute.html</loc>
-    <lastmod>2023-02-18T04:37:59.201Z</lastmod>
+    <lastmod>2023-02-25T22:12:37.359Z</lastmod>
   </url>
 </urlset>
