@@ -179,7 +179,7 @@
     "href": "workflow/index.html",
     "title": "Workflow",
     "section": "",
-    "text": "Part 1: Quanitufy auxiliary stainings\nWe will identify transcripts on the FISH images (sequential imaing rounds of the MERSCOPE run) and combine that with the MerFISH detected transcripts.\n\n\nPart 2: Cell segmentation\nOur two step approach includes cellpose and baysor.\n\nCellpose creates a segmentation based on the image data.\nBaysor then used the transcript neighboorhood to refine the segmentation.\n\nLastly, we put everything together in an Anndata object that can be used for downstream analysis.\n\n\nPart 3: Analysis\nThis sections contains the scripts for QC, cell annotation and the export to ZARR and OME-TIFF that are used in the browser"
+    "text": "Part 1: Quanitify auxiliary stainings\nWe will identify transcripts on the FISH images (sequential imaing rounds of the MERSCOPE run) and combine that with the MerFISH detected transcripts.\n\n\nPart 2: Cell segmentation\nOur two step approach includes cellpose and baysor.\n\nCellpose creates a segmentation based on the image data.\nBaysor then used the transcript neighboorhood to refine the segmentation.\n\nLastly, we put everything together in an Anndata object that can be used for downstream analysis.\n\n\nPart 3: Analysis\nThis sections contains the scripts for QC, cell annotation and the export to ZARR and OME-TIFF that are used in the browser"
   },
   {
     "objectID": "workflow/analysis/anndata_zarr.html",
