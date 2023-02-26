@@ -1,5 +1,5 @@
 ---
-title: Quantify auxilliary stainings
+title: Quantify auxiliary stainings
 order: 1
 listing: 
   type: default
