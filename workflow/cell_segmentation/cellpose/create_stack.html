@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Maximilian Heeg">
-<meta name="dcterms.date" content="2023-03-03">
+<meta name="dcterms.date" content="2023-06-27">
 <meta name="description" content="Stack the different layers from the segmentation images into on big TIFF file that can be used for cellpose.">
 
 <title>Spatial workflow - Prepare the images</title>
@@ -20,9 +20,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -49,43 +50,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -125,7 +96,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
@@ -152,33 +124,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../../index.html">
+    <a class="nav-link" href="../../../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../workflow/">
+    <a class="nav-link" href="../../../workflow/" rel="" target="">
  <span class="menu-text">Workflow</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../about.html">
+    <a class="nav-link" href="../../../about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../contribute.html">
+    <a class="nav-link" href="../../../contribute.html" rel="" target="">
  <span class="menu-text">Contribute</span></a>
   </li>  
 </ul>
-              <div class="quarto-toggle-container">
-                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
-              </div>
+            <div class="quarto-navbar-tools ms-auto">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Prepare the images</h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../workflow/cell_segmentation/index.html">Cell segmentation</a></li><li class="breadcrumb-item"><a href="../../../workflow/cell_segmentation/cellpose/index.html">Cellpose</a></li><li class="breadcrumb-item"><a href="../../../workflow/cell_segmentation/cellpose/create_stack.html">Prepare the images</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav>
@@ -186,118 +163,135 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-      <div class="mt-2 flex-shrink-0 align-items-center">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/auxiliary/index.html" class="sidebar-item-text sidebar-link">Quantify auxiliary stainings</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a href="../../../workflow/auxiliary/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quantify auxiliary stainings</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/auxiliary/quantify.html" class="sidebar-item-text sidebar-link">Quantification</a>
+  <a href="../../../workflow/auxiliary/quantify.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quantification</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/auxiliary/validation.html" class="sidebar-item-text sidebar-link">Validation</a>
+  <a href="../../../workflow/auxiliary/validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Validation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/auxiliary/Combine_Transcripts.html" class="sidebar-item-text sidebar-link">Combine with MerFISH</a>
+  <a href="../../../workflow/auxiliary/Combine_Transcripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Combine with MerFISH</span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/index.html" class="sidebar-item-text sidebar-link">Cell segmentation</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a href="../../../workflow/cell_segmentation/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cell segmentation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/cellpose/index.html" class="sidebar-item-text sidebar-link">Cellpose</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a href="../../../workflow/cell_segmentation/cellpose/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cellpose</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/create_stack.html" class="sidebar-item-text sidebar-link active">Prepare the images</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/create_stack.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Prepare the images</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/train_model.html" class="sidebar-item-text sidebar-link">Train a model</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/train_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Train a model</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/run_cellpose.html" class="sidebar-item-text sidebar-link">Run Cellpose</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/run_cellpose.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run Cellpose</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html" class="sidebar-item-text sidebar-link">Assing transcripts to cells</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assing transcripts to cells</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/baysor/index.html" class="sidebar-item-text sidebar-link">Baysor</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <a href="../../../workflow/cell_segmentation/baysor/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Baysor</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/baysor/script.html" class="sidebar-item-text sidebar-link">Script</a>
+  <a href="../../../workflow/cell_segmentation/baysor/script.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Script</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/anndata/index.html" class="sidebar-item-text sidebar-link">Anndata</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <a href="../../../workflow/cell_segmentation/anndata/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anndata</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/segmentation_plots.html" class="sidebar-item-text sidebar-link">Plots for cell segmentation</a>
+  <a href="../../../workflow/cell_segmentation/anndata/segmentation_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Plots for cell segmentation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/compare_baysor_runs.html" class="sidebar-item-text sidebar-link">Compare the different segmentation runs</a>
+  <a href="../../../workflow/cell_segmentation/anndata/compare_baysor_runs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compare the different segmentation runs</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/create_anndata.html" class="sidebar-item-text sidebar-link">Create Anndata</a>
+  <a href="../../../workflow/cell_segmentation/anndata/create_anndata.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Create Anndata</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/unroll.html" class="sidebar-item-text sidebar-link"><em>Bonus:</em> Unrolling</a>
+  <a href="../../../workflow/cell_segmentation/anndata/unroll.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><em>Bonus:</em> Unrolling</span></a>
   </div>
 </li>
       </ul>
@@ -306,30 +300,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/analysis/index.html" class="sidebar-item-text sidebar-link">Analysis</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <a href="../../../workflow/analysis/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/analysis/qc.html" class="sidebar-item-text sidebar-link">QC</a>
+  <a href="../../../workflow/analysis/qc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">QC</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/analysis/umap.html" class="sidebar-item-text sidebar-link">Annotation</a>
+  <a href="../../../workflow/analysis/umap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Annotation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/analysis/anndata_zarr.html" class="sidebar-item-text sidebar-link">Anndata Zarr export</a>
+  <a href="../../../workflow/analysis/anndata_zarr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anndata Zarr export</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/analysis/image_ome.html" class="sidebar-item-text sidebar-link">Image OME-TIFF export</a>
+  <a href="../../../workflow/analysis/image_ome.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Image OME-TIFF export</span></a>
   </div>
 </li>
       </ul>
@@ -337,6 +336,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
@@ -346,7 +346,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Prepare the images</h1>
+<h1 class="title">Prepare the images</h1>
 </div>
 
 <div>
@@ -368,7 +368,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 3, 2023</p>
+      <p class="date">June 27, 2023</p>
     </div>
   </div>
   
@@ -425,110 +425,62 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>polyT <span class="op">=</span> import_layer(<span class="st">"pyrmosaic_PolyT"</span>, scale<span class="op">=</span><span class="dv">3</span>, verbose<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>cell2 <span class="op">=</span> import_layer(<span class="st">"pyrmosaic_Cellbound2"</span>, scale<span class="op">=</span><span class="dv">3</span>, verbose<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Shaped series: series shape does not match page shape</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Imporint layres for "pyrmosaic_PolyT"
-... Reading "../raw_data/pictures/pyrmosaic_PolyT_z0.tif"</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Shaped series: series shape does not match page shape</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>... Reading "../raw_data/pictures/pyrmosaic_PolyT_z1.tif"</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Shaped series: series shape does not match page shape</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>... Reading "../raw_data/pictures/pyrmosaic_PolyT_z2.tif"</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Shaped series: series shape does not match page shape</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>... Reading "../raw_data/pictures/pyrmosaic_PolyT_z3.tif"</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Shaped series: series shape does not match page shape</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>... Reading "../raw_data/pictures/pyrmosaic_PolyT_z4.tif"</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Shaped series: series shape does not match page shape</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>... Reading "../raw_data/pictures/pyrmosaic_PolyT_z5.tif"</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Shaped series: series shape does not match page shape</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>... Reading "../raw_data/pictures/pyrmosaic_PolyT_z6.tif"
-... stacking</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Shaped series: series shape does not match page shape</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Imporint layres for "pyrmosaic_Cellbound2"
-... Reading "../raw_data/pictures/pyrmosaic_Cellbound2_z0.tif"</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Shaped series: series shape does not match page shape</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>... Reading "../raw_data/pictures/pyrmosaic_Cellbound2_z1.tif"</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Shaped series: series shape does not match page shape</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>... Reading "../raw_data/pictures/pyrmosaic_Cellbound2_z2.tif"</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Shaped series: series shape does not match page shape</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>... Reading "../raw_data/pictures/pyrmosaic_Cellbound2_z3.tif"
-... Reading "../raw_data/pictures/pyrmosaic_Cellbound2_z4.tif"</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
 <pre><code>Shaped series: series shape does not match page shape
+Shaped series: series shape does not match page shape
+Shaped series: series shape does not match page shape
+Shaped series: series shape does not match page shape
+Shaped series: series shape does not match page shape
+Shaped series: series shape does not match page shape
+Shaped series: series shape does not match page shape
+Shaped series: series shape does not match page shape
+Shaped series: series shape does not match page shape
+Shaped series: series shape does not match page shape
+Shaped series: series shape does not match page shape
+Shaped series: series shape does not match page shape
+Shaped series: series shape does not match page shape
 Shaped series: series shape does not match page shape</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>... Reading "../raw_data/pictures/pyrmosaic_Cellbound2_z5.tif"</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Shaped series: series shape does not match page shape</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>... Reading "../raw_data/pictures/pyrmosaic_Cellbound2_z6.tif"
+<pre><code>Imporint layres for "pyrmosaic_PolyT"
+... Reading "../raw_data/pictures/pyrmosaic_PolyT_z0.tif"
+... Reading "../raw_data/pictures/pyrmosaic_PolyT_z1.tif"
+... Reading "../raw_data/pictures/pyrmosaic_PolyT_z2.tif"
+... Reading "../raw_data/pictures/pyrmosaic_PolyT_z3.tif"
+... Reading "../raw_data/pictures/pyrmosaic_PolyT_z4.tif"
+... Reading "../raw_data/pictures/pyrmosaic_PolyT_z5.tif"
+... Reading "../raw_data/pictures/pyrmosaic_PolyT_z6.tif"
+... stacking
+Imporint layres for "pyrmosaic_Cellbound2"
+... Reading "../raw_data/pictures/pyrmosaic_Cellbound2_z0.tif"
+... Reading "../raw_data/pictures/pyrmosaic_Cellbound2_z1.tif"
+... Reading "../raw_data/pictures/pyrmosaic_Cellbound2_z2.tif"
+... Reading "../raw_data/pictures/pyrmosaic_Cellbound2_z3.tif"
+... Reading "../raw_data/pictures/pyrmosaic_Cellbound2_z4.tif"
+... Reading "../raw_data/pictures/pyrmosaic_Cellbound2_z5.tif"
+... Reading "../raw_data/pictures/pyrmosaic_Cellbound2_z6.tif"
 ... stacking</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="69">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>stack <span class="op">=</span> np.stack([cell2, polyT], <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>stack <span class="op">=</span> np.stack([cell2, polyT], <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="70">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> tifffile.TiffWriter(<span class="st">'scratch/full_stack.tif'</span>,  bigtiff<span class="op">=</span><span class="va">True</span>) <span class="im">as</span> tif:</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    tif.save(stack)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> tifffile.TiffWriter(<span class="st">'scratch/full_stack.tif'</span>,  bigtiff<span class="op">=</span><span class="va">True</span>) <span class="im">as</span> tif:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    tif.save(stack)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-scrolled="true" data-tags="[]" data-execution_count="71">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tile_img(img, tiles<span class="op">=</span><span class="dv">2</span>):</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> np.array_split(img, tiles, axis<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> [np.array_split(t, tiles, axis<span class="op">=</span><span class="dv">3</span>) <span class="cf">for</span> t <span class="kw">in</span> res]</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(res)):</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(res[x])):</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Saving tile x:</span><span class="sc">{</span>x<span class="sc">}</span><span class="ss"> y:</span><span class="sc">{</span>y<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> tifffile.TiffWriter(<span class="ss">f"scratch/tiles/tile_</span><span class="sc">{</span>x<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>y<span class="sc">}</span><span class="ss">.tif"</span>) <span class="im">as</span> tif:</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>                tif.save(res[x][y])</span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>tile_img(stack, tiles<span class="op">=</span><span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tile_img(img, tiles<span class="op">=</span><span class="dv">2</span>):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> np.array_split(img, tiles, axis<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> [np.array_split(t, tiles, axis<span class="op">=</span><span class="dv">3</span>) <span class="cf">for</span> t <span class="kw">in</span> res]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(res)):</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(res[x])):</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Saving tile x:</span><span class="sc">{</span>x<span class="sc">}</span><span class="ss"> y:</span><span class="sc">{</span>y<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> tifffile.TiffWriter(<span class="ss">f"scratch/tiles/tile_</span><span class="sc">{</span>x<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>y<span class="sc">}</span><span class="ss">.tif"</span>) <span class="im">as</span> tif:</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                tif.save(res[x][y])</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>tile_img(stack, tiles<span class="op">=</span><span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Saving tile x:0 y:0
 Saving tile x:0 y:1
@@ -677,7 +629,7 @@ Saving tile x:11 y:11</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="72">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>stack.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>stack.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="72">
 <pre><code>(7, 2, 21673, 19821)</code></pre>
 </div>
@@ -828,9 +780,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -895,6 +861,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -933,12 +985,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/spatial\.heeg\.io/);
+      var filterRegex = new RegExp("spatial\.heeg\.io");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
-    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -965,13 +1017,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">
-        <ul class="footer-items list-unstyled">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
     <li class="nav-item">
     <a class="nav-link" href="../../../about.html">About</a>
   </li>  
 </ul>
-      </div>
+    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/maximilian-heeg/spatial-workflow/blob/main/workflow/cell_segmentation/cellpose/01_create_stack_and_tiles.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/maximilian-heeg/spatial-workflow/issues/new" class="toc-action">Report an issue</a></p></div></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
   </div>
 </footer>
 

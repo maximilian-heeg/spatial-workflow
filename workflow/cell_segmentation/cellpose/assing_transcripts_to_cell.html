@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Maximilian Heeg">
-<meta name="dcterms.date" content="2023-03-03">
+<meta name="dcterms.date" content="2023-06-27">
 <meta name="description" content="Use the segmentation mask and assign the transcripts from MerFISH and auxiliary staining to cells.">
 
 <title>Spatial workflow - Assing transcripts to cells</title>
@@ -20,9 +20,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -49,43 +50,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -125,7 +96,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
@@ -155,33 +127,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../../index.html">
+    <a class="nav-link" href="../../../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../workflow/">
+    <a class="nav-link" href="../../../workflow/" rel="" target="">
  <span class="menu-text">Workflow</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../about.html">
+    <a class="nav-link" href="../../../about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../contribute.html">
+    <a class="nav-link" href="../../../contribute.html" rel="" target="">
  <span class="menu-text">Contribute</span></a>
   </li>  
 </ul>
-              <div class="quarto-toggle-container">
-                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
-              </div>
+            <div class="quarto-navbar-tools ms-auto">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Assing transcripts to cells</h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../workflow/cell_segmentation/index.html">Cell segmentation</a></li><li class="breadcrumb-item"><a href="../../../workflow/cell_segmentation/cellpose/index.html">Cellpose</a></li><li class="breadcrumb-item"><a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html">Assing transcripts to cells</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav>
@@ -189,118 +166,135 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-      <div class="mt-2 flex-shrink-0 align-items-center">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/auxiliary/index.html" class="sidebar-item-text sidebar-link">Quantify auxiliary stainings</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a href="../../../workflow/auxiliary/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quantify auxiliary stainings</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/auxiliary/quantify.html" class="sidebar-item-text sidebar-link">Quantification</a>
+  <a href="../../../workflow/auxiliary/quantify.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quantification</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/auxiliary/validation.html" class="sidebar-item-text sidebar-link">Validation</a>
+  <a href="../../../workflow/auxiliary/validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Validation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/auxiliary/Combine_Transcripts.html" class="sidebar-item-text sidebar-link">Combine with MerFISH</a>
+  <a href="../../../workflow/auxiliary/Combine_Transcripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Combine with MerFISH</span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/index.html" class="sidebar-item-text sidebar-link">Cell segmentation</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a href="../../../workflow/cell_segmentation/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cell segmentation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/cellpose/index.html" class="sidebar-item-text sidebar-link">Cellpose</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a href="../../../workflow/cell_segmentation/cellpose/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cellpose</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/create_stack.html" class="sidebar-item-text sidebar-link">Prepare the images</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/create_stack.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prepare the images</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/train_model.html" class="sidebar-item-text sidebar-link">Train a model</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/train_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Train a model</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/run_cellpose.html" class="sidebar-item-text sidebar-link">Run Cellpose</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/run_cellpose.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run Cellpose</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html" class="sidebar-item-text sidebar-link active">Assing transcripts to cells</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Assing transcripts to cells</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/baysor/index.html" class="sidebar-item-text sidebar-link">Baysor</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <a href="../../../workflow/cell_segmentation/baysor/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Baysor</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/baysor/script.html" class="sidebar-item-text sidebar-link">Script</a>
+  <a href="../../../workflow/cell_segmentation/baysor/script.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Script</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/anndata/index.html" class="sidebar-item-text sidebar-link">Anndata</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <a href="../../../workflow/cell_segmentation/anndata/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anndata</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/segmentation_plots.html" class="sidebar-item-text sidebar-link">Plots for cell segmentation</a>
+  <a href="../../../workflow/cell_segmentation/anndata/segmentation_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Plots for cell segmentation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/compare_baysor_runs.html" class="sidebar-item-text sidebar-link">Compare the different segmentation runs</a>
+  <a href="../../../workflow/cell_segmentation/anndata/compare_baysor_runs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compare the different segmentation runs</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/create_anndata.html" class="sidebar-item-text sidebar-link">Create Anndata</a>
+  <a href="../../../workflow/cell_segmentation/anndata/create_anndata.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Create Anndata</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/unroll.html" class="sidebar-item-text sidebar-link"><em>Bonus:</em> Unrolling</a>
+  <a href="../../../workflow/cell_segmentation/anndata/unroll.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><em>Bonus:</em> Unrolling</span></a>
   </div>
 </li>
       </ul>
@@ -309,30 +303,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/analysis/index.html" class="sidebar-item-text sidebar-link">Analysis</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <a href="../../../workflow/analysis/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/analysis/qc.html" class="sidebar-item-text sidebar-link">QC</a>
+  <a href="../../../workflow/analysis/qc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">QC</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/analysis/umap.html" class="sidebar-item-text sidebar-link">Annotation</a>
+  <a href="../../../workflow/analysis/umap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Annotation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/analysis/anndata_zarr.html" class="sidebar-item-text sidebar-link">Anndata Zarr export</a>
+  <a href="../../../workflow/analysis/anndata_zarr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anndata Zarr export</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/analysis/image_ome.html" class="sidebar-item-text sidebar-link">Image OME-TIFF export</a>
+  <a href="../../../workflow/analysis/image_ome.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Image OME-TIFF export</span></a>
   </div>
 </li>
       </ul>
@@ -340,6 +339,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
@@ -349,7 +349,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Assing transcripts to cells</h1>
+<h1 class="title">Assing transcripts to cells</h1>
 </div>
 
 <div>
@@ -371,7 +371,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 3, 2023</p>
+      <p class="date">June 27, 2023</p>
     </div>
   </div>
   
@@ -459,171 +459,172 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>transcripts <span class="op">=</span> pd.read_csv(<span class="st">"../auxiliary/all_transcripts.csv"</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>transcripts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Unnamed: 0</th>
-      <th>barcode_id</th>
-      <th>global_x</th>
-      <th>global_y</th>
-      <th>global_z</th>
-      <th>x</th>
-      <th>y</th>
-      <th>fov</th>
-      <th>gene</th>
-      <th>transcript_id</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>76052</td>
-      <td>29</td>
-      <td>4811.931152</td>
-      <td>133.306046</td>
-      <td>1.0</td>
-      <td>106.918274</td>
-      <td>1234.315186</td>
-      <td>0</td>
-      <td>Ctcf</td>
-      <td>ENSMUST00000005841</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>578964</td>
-      <td>170</td>
-      <td>4873.683594</td>
-      <td>128.109299</td>
-      <td>3.0</td>
-      <td>678.702148</td>
-      <td>1186.197266</td>
-      <td>0</td>
-      <td>Ets1</td>
-      <td>ENSMUST00000034534</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>663018</td>
-      <td>194</td>
-      <td>4963.922363</td>
-      <td>117.802322</td>
-      <td>0.0</td>
-      <td>1514.247681</td>
-      <td>1090.762207</td>
-      <td>0</td>
-      <td>Prdm1</td>
-      <td>ENSMUST00000039174</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>802336</td>
-      <td>241</td>
-      <td>4892.742188</td>
-      <td>192.105209</td>
-      <td>0.0</td>
-      <td>855.170471</td>
-      <td>1778.751831</td>
-      <td>0</td>
-      <td>Cxcr3</td>
-      <td>ENSMUST00000056614</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>805053</td>
-      <td>241</td>
-      <td>4972.506836</td>
-      <td>186.719177</td>
-      <td>3.0</td>
-      <td>1593.731567</td>
-      <td>1728.881226</td>
-      <td>0</td>
-      <td>Cxcr3</td>
-      <td>ENSMUST00000056614</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>260479</th>
-      <td>724991</td>
-      <td>221</td>
-      <td>2836.630859</td>
-      <td>9747.528320</td>
-      <td>0.0</td>
-      <td>337.099091</td>
-      <td>1358.897705</td>
-      <td>1467</td>
-      <td>Cd74</td>
-      <td>ENSMUST00000050487</td>
-    </tr>
-    <tr>
-      <th>260480</th>
-      <td>977945</td>
-      <td>298</td>
-      <td>2926.006836</td>
-      <td>9729.467773</td>
-      <td>0.0</td>
-      <td>1164.655518</td>
-      <td>1191.672241</td>
-      <td>1467</td>
-      <td>Arnt</td>
-      <td>ENSMUST00000090804</td>
-    </tr>
-    <tr>
-      <th>260481</th>
-      <td>1454933</td>
-      <td>435</td>
-      <td>2815.286865</td>
-      <td>9769.478516</td>
-      <td>0.0</td>
-      <td>139.470963</td>
-      <td>1562.134277</td>
-      <td>1467</td>
-      <td>Aldh18a1</td>
-      <td>ENSMUST00000176939</td>
-    </tr>
-    <tr>
-      <th>260482</th>
-      <td>1577062</td>
-      <td>477</td>
-      <td>2966.376953</td>
-      <td>9744.248047</td>
-      <td>0.0</td>
-      <td>1538.451660</td>
-      <td>1328.524292</td>
-      <td>1467</td>
-      <td>Hmgcs1</td>
-      <td>ENSMUST00000224188</td>
-    </tr>
-    <tr>
-      <th>260483</th>
-      <td>1706449</td>
-      <td>511</td>
-      <td>2883.143311</td>
-      <td>9709.230469</td>
-      <td>0.0</td>
-      <td>767.769409</td>
-      <td>1004.289124</td>
-      <td>1467</td>
-      <td>Blank-17</td>
-      <td>-1</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Unnamed: 0</th>
+<th data-quarto-table-cell-role="th">barcode_id</th>
+<th data-quarto-table-cell-role="th">global_x</th>
+<th data-quarto-table-cell-role="th">global_y</th>
+<th data-quarto-table-cell-role="th">global_z</th>
+<th data-quarto-table-cell-role="th">x</th>
+<th data-quarto-table-cell-role="th">y</th>
+<th data-quarto-table-cell-role="th">fov</th>
+<th data-quarto-table-cell-role="th">gene</th>
+<th data-quarto-table-cell-role="th">transcript_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>76052</td>
+<td>29</td>
+<td>4811.931152</td>
+<td>133.306046</td>
+<td>1.0</td>
+<td>106.918274</td>
+<td>1234.315186</td>
+<td>0</td>
+<td>Ctcf</td>
+<td>ENSMUST00000005841</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>578964</td>
+<td>170</td>
+<td>4873.683594</td>
+<td>128.109299</td>
+<td>3.0</td>
+<td>678.702148</td>
+<td>1186.197266</td>
+<td>0</td>
+<td>Ets1</td>
+<td>ENSMUST00000034534</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>663018</td>
+<td>194</td>
+<td>4963.922363</td>
+<td>117.802322</td>
+<td>0.0</td>
+<td>1514.247681</td>
+<td>1090.762207</td>
+<td>0</td>
+<td>Prdm1</td>
+<td>ENSMUST00000039174</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>802336</td>
+<td>241</td>
+<td>4892.742188</td>
+<td>192.105209</td>
+<td>0.0</td>
+<td>855.170471</td>
+<td>1778.751831</td>
+<td>0</td>
+<td>Cxcr3</td>
+<td>ENSMUST00000056614</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>805053</td>
+<td>241</td>
+<td>4972.506836</td>
+<td>186.719177</td>
+<td>3.0</td>
+<td>1593.731567</td>
+<td>1728.881226</td>
+<td>0</td>
+<td>Cxcr3</td>
+<td>ENSMUST00000056614</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">260479</td>
+<td>724991</td>
+<td>221</td>
+<td>2836.630859</td>
+<td>9747.528320</td>
+<td>0.0</td>
+<td>337.099091</td>
+<td>1358.897705</td>
+<td>1467</td>
+<td>Cd74</td>
+<td>ENSMUST00000050487</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">260480</td>
+<td>977945</td>
+<td>298</td>
+<td>2926.006836</td>
+<td>9729.467773</td>
+<td>0.0</td>
+<td>1164.655518</td>
+<td>1191.672241</td>
+<td>1467</td>
+<td>Arnt</td>
+<td>ENSMUST00000090804</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">260481</td>
+<td>1454933</td>
+<td>435</td>
+<td>2815.286865</td>
+<td>9769.478516</td>
+<td>0.0</td>
+<td>139.470963</td>
+<td>1562.134277</td>
+<td>1467</td>
+<td>Aldh18a1</td>
+<td>ENSMUST00000176939</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">260482</td>
+<td>1577062</td>
+<td>477</td>
+<td>2966.376953</td>
+<td>9744.248047</td>
+<td>0.0</td>
+<td>1538.451660</td>
+<td>1328.524292</td>
+<td>1467</td>
+<td>Hmgcs1</td>
+<td>ENSMUST00000224188</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">260483</td>
+<td>1706449</td>
+<td>511</td>
+<td>2883.143311</td>
+<td>9709.230469</td>
+<td>0.0</td>
+<td>767.769409</td>
+<td>1004.289124</td>
+<td>1467</td>
+<td>Blank-17</td>
+<td>-1</td>
+</tr>
+</tbody>
 </table>
+
 <p>260484 rows × 10 columns</p>
 </div>
 </div>
@@ -722,111 +723,112 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>transcripts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>global_x</th>
-      <th>global_y</th>
-      <th>global_z</th>
-      <th>gene</th>
-      <th>mask</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>3822.614000</td>
-      <td>134.603240</td>
-      <td>4.0</td>
-      <td>Pycr1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>3865.508500</td>
-      <td>89.455734</td>
-      <td>5.0</td>
-      <td>Slc7a11</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3972.906500</td>
-      <td>163.452200</td>
-      <td>6.0</td>
-      <td>Cxcr3</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>3968.895800</td>
-      <td>33.911680</td>
-      <td>0.0</td>
-      <td>Ldhb</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>3664.242700</td>
-      <td>184.795300</td>
-      <td>4.0</td>
-      <td>Slc2a2</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>17812303</th>
-      <td>3266.297176</td>
-      <td>6421.473477</td>
-      <td>6.0</td>
-      <td>B2m</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>17812304</th>
-      <td>3499.033270</td>
-      <td>6353.866514</td>
-      <td>6.0</td>
-      <td>B2m</td>
-      <td>136929</td>
-    </tr>
-    <tr>
-      <th>17812305</th>
-      <td>3502.489212</td>
-      <td>6355.486490</td>
-      <td>6.0</td>
-      <td>B2m</td>
-      <td>54100</td>
-    </tr>
-    <tr>
-      <th>17812306</th>
-      <td>3848.083411</td>
-      <td>6330.754869</td>
-      <td>6.0</td>
-      <td>B2m</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>17812307</th>
-      <td>3905.538447</td>
-      <td>6375.466183</td>
-      <td>6.0</td>
-      <td>B2m</td>
-      <td>98745</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">global_x</th>
+<th data-quarto-table-cell-role="th">global_y</th>
+<th data-quarto-table-cell-role="th">global_z</th>
+<th data-quarto-table-cell-role="th">gene</th>
+<th data-quarto-table-cell-role="th">mask</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>3822.614000</td>
+<td>134.603240</td>
+<td>4.0</td>
+<td>Pycr1</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>3865.508500</td>
+<td>89.455734</td>
+<td>5.0</td>
+<td>Slc7a11</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>3972.906500</td>
+<td>163.452200</td>
+<td>6.0</td>
+<td>Cxcr3</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>3968.895800</td>
+<td>33.911680</td>
+<td>0.0</td>
+<td>Ldhb</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5</td>
+<td>3664.242700</td>
+<td>184.795300</td>
+<td>4.0</td>
+<td>Slc2a2</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17812303</td>
+<td>3266.297176</td>
+<td>6421.473477</td>
+<td>6.0</td>
+<td>B2m</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">17812304</td>
+<td>3499.033270</td>
+<td>6353.866514</td>
+<td>6.0</td>
+<td>B2m</td>
+<td>136929</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17812305</td>
+<td>3502.489212</td>
+<td>6355.486490</td>
+<td>6.0</td>
+<td>B2m</td>
+<td>54100</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">17812306</td>
+<td>3848.083411</td>
+<td>6330.754869</td>
+<td>6.0</td>
+<td>B2m</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17812307</td>
+<td>3905.538447</td>
+<td>6375.466183</td>
+<td>6.0</td>
+<td>B2m</td>
+<td>98745</td>
+</tr>
+</tbody>
 </table>
+
 <p>17720905 rows × 5 columns</p>
 </div>
 </div>
@@ -994,9 +996,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -1061,6 +1077,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -1099,12 +1201,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/spatial\.heeg\.io/);
+      var filterRegex = new RegExp("spatial\.heeg\.io");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
-    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -1131,13 +1233,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">
-        <ul class="footer-items list-unstyled">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
     <li class="nav-item">
     <a class="nav-link" href="../../../about.html">About</a>
   </li>  
 </ul>
-      </div>
+    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/maximilian-heeg/spatial-workflow/blob/main/workflow/cell_segmentation/cellpose/04_add_cell_to_transcripts.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/maximilian-heeg/spatial-workflow/issues/new" class="toc-action">Report an issue</a></p></div></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
   </div>
 </footer>
 

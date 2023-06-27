@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Maximilian Heeg">
-<meta name="dcterms.date" content="2023-03-03">
+<meta name="dcterms.date" content="2023-06-27">
 <meta name="description" content="Put everything together in an Anndata object that can be used with pyhton or R for further analysis">
 
 <title>Spatial workflow - Create Anndata</title>
@@ -20,9 +20,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -49,43 +50,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -125,7 +96,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
@@ -135,7 +107,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <meta name="twitter:title" content="Spatial workflow - Create Anndata">
 <meta name="twitter:description" content="Put everything together in an Anndata object that can be used with pyhton or R for further analysis">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="spatial.heeg.io/workflow/cell_segmentation/anndata/08_create_anndata_files/figure-html/cell-21-output-1.png">
+<meta name="twitter:image-height" content="249">
+<meta name="twitter:image-width" content="366">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="floating nav-fixed">
@@ -155,33 +130,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../../index.html">
+    <a class="nav-link" href="../../../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../workflow/">
+    <a class="nav-link" href="../../../workflow/" rel="" target="">
  <span class="menu-text">Workflow</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../about.html">
+    <a class="nav-link" href="../../../about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../contribute.html">
+    <a class="nav-link" href="../../../contribute.html" rel="" target="">
  <span class="menu-text">Contribute</span></a>
   </li>  
 </ul>
-              <div class="quarto-toggle-container">
-                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
-              </div>
+            <div class="quarto-navbar-tools ms-auto">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Create Anndata</h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../workflow/cell_segmentation/index.html">Cell segmentation</a></li><li class="breadcrumb-item"><a href="../../../workflow/cell_segmentation/anndata/index.html">Anndata</a></li><li class="breadcrumb-item"><a href="../../../workflow/cell_segmentation/anndata/create_anndata.html">Create Anndata</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav>
@@ -189,118 +169,135 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-      <div class="mt-2 flex-shrink-0 align-items-center">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/auxiliary/index.html" class="sidebar-item-text sidebar-link">Quantify auxiliary stainings</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a href="../../../workflow/auxiliary/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quantify auxiliary stainings</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/auxiliary/quantify.html" class="sidebar-item-text sidebar-link">Quantification</a>
+  <a href="../../../workflow/auxiliary/quantify.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quantification</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/auxiliary/validation.html" class="sidebar-item-text sidebar-link">Validation</a>
+  <a href="../../../workflow/auxiliary/validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Validation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/auxiliary/Combine_Transcripts.html" class="sidebar-item-text sidebar-link">Combine with MerFISH</a>
+  <a href="../../../workflow/auxiliary/Combine_Transcripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Combine with MerFISH</span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/index.html" class="sidebar-item-text sidebar-link">Cell segmentation</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a href="../../../workflow/cell_segmentation/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cell segmentation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/cellpose/index.html" class="sidebar-item-text sidebar-link">Cellpose</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <a href="../../../workflow/cell_segmentation/cellpose/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cellpose</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/create_stack.html" class="sidebar-item-text sidebar-link">Prepare the images</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/create_stack.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prepare the images</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/train_model.html" class="sidebar-item-text sidebar-link">Train a model</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/train_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Train a model</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/run_cellpose.html" class="sidebar-item-text sidebar-link">Run Cellpose</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/run_cellpose.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run Cellpose</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html" class="sidebar-item-text sidebar-link">Assing transcripts to cells</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assing transcripts to cells</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/baysor/index.html" class="sidebar-item-text sidebar-link">Baysor</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <a href="../../../workflow/cell_segmentation/baysor/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Baysor</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/baysor/script.html" class="sidebar-item-text sidebar-link">Script</a>
+  <a href="../../../workflow/cell_segmentation/baysor/script.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Script</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/anndata/index.html" class="sidebar-item-text sidebar-link">Anndata</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a href="../../../workflow/cell_segmentation/anndata/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anndata</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/segmentation_plots.html" class="sidebar-item-text sidebar-link">Plots for cell segmentation</a>
+  <a href="../../../workflow/cell_segmentation/anndata/segmentation_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Plots for cell segmentation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/compare_baysor_runs.html" class="sidebar-item-text sidebar-link">Compare the different segmentation runs</a>
+  <a href="../../../workflow/cell_segmentation/anndata/compare_baysor_runs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compare the different segmentation runs</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/create_anndata.html" class="sidebar-item-text sidebar-link active">Create Anndata</a>
+  <a href="../../../workflow/cell_segmentation/anndata/create_anndata.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Create Anndata</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/unroll.html" class="sidebar-item-text sidebar-link"><em>Bonus:</em> Unrolling</a>
+  <a href="../../../workflow/cell_segmentation/anndata/unroll.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><em>Bonus:</em> Unrolling</span></a>
   </div>
 </li>
       </ul>
@@ -309,30 +306,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/analysis/index.html" class="sidebar-item-text sidebar-link">Analysis</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <a href="../../../workflow/analysis/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/analysis/qc.html" class="sidebar-item-text sidebar-link">QC</a>
+  <a href="../../../workflow/analysis/qc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">QC</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/analysis/umap.html" class="sidebar-item-text sidebar-link">Annotation</a>
+  <a href="../../../workflow/analysis/umap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Annotation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/analysis/anndata_zarr.html" class="sidebar-item-text sidebar-link">Anndata Zarr export</a>
+  <a href="../../../workflow/analysis/anndata_zarr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anndata Zarr export</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/analysis/image_ome.html" class="sidebar-item-text sidebar-link">Image OME-TIFF export</a>
+  <a href="../../../workflow/analysis/image_ome.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Image OME-TIFF export</span></a>
   </div>
 </li>
       </ul>
@@ -340,6 +342,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -355,7 +358,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Create Anndata</h1>
+<h1 class="title">Create Anndata</h1>
 </div>
 
 <div>
@@ -377,7 +380,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 3, 2023</p>
+      <p class="date">June 27, 2023</p>
     </div>
   </div>
   
@@ -418,327 +421,328 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> pd.read_csv(path <span class="op">+</span> <span class="st">"segmentation_counts.tsv"</span>,sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>, index_col<span class="op">=</span><span class="st">'gene'</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>counts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>1</th>
-      <th>2</th>
-      <th>3</th>
-      <th>4</th>
-      <th>5</th>
-      <th>6</th>
-      <th>7</th>
-      <th>8</th>
-      <th>9</th>
-      <th>10</th>
-      <th>...</th>
-      <th>120685</th>
-      <th>120686</th>
-      <th>120687</th>
-      <th>120688</th>
-      <th>120689</th>
-      <th>120690</th>
-      <th>120691</th>
-      <th>120692</th>
-      <th>120693</th>
-      <th>120694</th>
-    </tr>
-    <tr>
-      <th>gene</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Abca2</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Abcg1</th>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Acly</th>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Acta2</th>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Adam12</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>Zfas1</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Zfp683</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Znrf2</th>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>Zp3</th>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>mt-Nd4l</th>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">1</th>
+<th data-quarto-table-cell-role="th">2</th>
+<th data-quarto-table-cell-role="th">3</th>
+<th data-quarto-table-cell-role="th">4</th>
+<th data-quarto-table-cell-role="th">5</th>
+<th data-quarto-table-cell-role="th">6</th>
+<th data-quarto-table-cell-role="th">7</th>
+<th data-quarto-table-cell-role="th">8</th>
+<th data-quarto-table-cell-role="th">9</th>
+<th data-quarto-table-cell-role="th">10</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">120685</th>
+<th data-quarto-table-cell-role="th">120686</th>
+<th data-quarto-table-cell-role="th">120687</th>
+<th data-quarto-table-cell-role="th">120688</th>
+<th data-quarto-table-cell-role="th">120689</th>
+<th data-quarto-table-cell-role="th">120690</th>
+<th data-quarto-table-cell-role="th">120691</th>
+<th data-quarto-table-cell-role="th">120692</th>
+<th data-quarto-table-cell-role="th">120693</th>
+<th data-quarto-table-cell-role="th">120694</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">gene</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Abca2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Abcg1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Acly</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Acta2</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Adam12</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Zfas1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Zfp683</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Znrf2</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Zp3</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">mt-Nd4l</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>...</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
 </table>
+
 <p>499 rows × 120694 columns</p>
 </div>
 </div>
@@ -748,158 +752,159 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cells <span class="op">=</span> pd.read_csv(path <span class="op">+</span> <span class="st">"segmentation_cell_stats.csv"</span>, index_col<span class="op">=</span><span class="st">"cell"</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>cells</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>x</th>
-      <th>y</th>
-      <th>cluster</th>
-      <th>n_transcripts</th>
-      <th>density</th>
-      <th>elongation</th>
-      <th>area</th>
-      <th>avg_confidence</th>
-    </tr>
-    <tr>
-      <th>cell</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1</th>
-      <td>130.347934</td>
-      <td>1410.084088</td>
-      <td>5</td>
-      <td>507</td>
-      <td>3.197</td>
-      <td>1.744</td>
-      <td>158.600</td>
-      <td>1.0000</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>123.784174</td>
-      <td>1416.490865</td>
-      <td>2</td>
-      <td>416</td>
-      <td>4.164</td>
-      <td>1.319</td>
-      <td>99.900</td>
-      <td>0.9999</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>138.937365</td>
-      <td>1407.709821</td>
-      <td>5</td>
-      <td>393</td>
-      <td>2.659</td>
-      <td>1.545</td>
-      <td>147.800</td>
-      <td>0.9996</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>145.826591</td>
-      <td>1406.267540</td>
-      <td>2</td>
-      <td>172</td>
-      <td>2.533</td>
-      <td>1.929</td>
-      <td>67.900</td>
-      <td>1.0000</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>142.976419</td>
-      <td>1409.124042</td>
-      <td>2</td>
-      <td>16</td>
-      <td>2.022</td>
-      <td>4.211</td>
-      <td>7.914</td>
-      <td>1.0000</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>120690</th>
-      <td>2691.674300</td>
-      <td>669.079100</td>
-      <td>6</td>
-      <td>1</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>1.0000</td>
-    </tr>
-    <tr>
-      <th>120691</th>
-      <td>5225.633000</td>
-      <td>5751.088000</td>
-      <td>6</td>
-      <td>1</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.9999</td>
-    </tr>
-    <tr>
-      <th>120692</th>
-      <td>1583.965900</td>
-      <td>2634.434350</td>
-      <td>6</td>
-      <td>2</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.9998</td>
-    </tr>
-    <tr>
-      <th>120693</th>
-      <td>3159.905300</td>
-      <td>5049.000000</td>
-      <td>6</td>
-      <td>1</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.9775</td>
-    </tr>
-    <tr>
-      <th>120694</th>
-      <td>1896.185200</td>
-      <td>1018.834170</td>
-      <td>7</td>
-      <td>1</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.9999</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">x</th>
+<th data-quarto-table-cell-role="th">y</th>
+<th data-quarto-table-cell-role="th">cluster</th>
+<th data-quarto-table-cell-role="th">n_transcripts</th>
+<th data-quarto-table-cell-role="th">density</th>
+<th data-quarto-table-cell-role="th">elongation</th>
+<th data-quarto-table-cell-role="th">area</th>
+<th data-quarto-table-cell-role="th">avg_confidence</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">cell</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>130.347934</td>
+<td>1410.084088</td>
+<td>5</td>
+<td>507</td>
+<td>3.197</td>
+<td>1.744</td>
+<td>158.600</td>
+<td>1.0000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2</td>
+<td>123.784174</td>
+<td>1416.490865</td>
+<td>2</td>
+<td>416</td>
+<td>4.164</td>
+<td>1.319</td>
+<td>99.900</td>
+<td>0.9999</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>138.937365</td>
+<td>1407.709821</td>
+<td>5</td>
+<td>393</td>
+<td>2.659</td>
+<td>1.545</td>
+<td>147.800</td>
+<td>0.9996</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4</td>
+<td>145.826591</td>
+<td>1406.267540</td>
+<td>2</td>
+<td>172</td>
+<td>2.533</td>
+<td>1.929</td>
+<td>67.900</td>
+<td>1.0000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5</td>
+<td>142.976419</td>
+<td>1409.124042</td>
+<td>2</td>
+<td>16</td>
+<td>2.022</td>
+<td>4.211</td>
+<td>7.914</td>
+<td>1.0000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">120690</td>
+<td>2691.674300</td>
+<td>669.079100</td>
+<td>6</td>
+<td>1</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>1.0000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">120691</td>
+<td>5225.633000</td>
+<td>5751.088000</td>
+<td>6</td>
+<td>1</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.9999</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">120692</td>
+<td>1583.965900</td>
+<td>2634.434350</td>
+<td>6</td>
+<td>2</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.9998</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">120693</td>
+<td>3159.905300</td>
+<td>5049.000000</td>
+<td>6</td>
+<td>1</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.9775</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">120694</td>
+<td>1896.185200</td>
+<td>1018.834170</td>
+<td>7</td>
+<td>1</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.9999</td>
+</tr>
+</tbody>
 </table>
+
 <p>120694 rows × 8 columns</p>
 </div>
 </div>
@@ -916,219 +921,220 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>transcripts <span class="op">=</span> pd.read_csv(path <span class="op">+</span> <span class="st">"segmentation.csv"</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>transcripts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Column1</th>
-      <th>x</th>
-      <th>y</th>
-      <th>z</th>
-      <th>gene</th>
-      <th>mask</th>
-      <th>molecule_id</th>
-      <th>prior_segmentation</th>
-      <th>confidence</th>
-      <th>cluster</th>
-      <th>cell</th>
-      <th>assignment_confidence</th>
-      <th>is_noise</th>
-      <th>ncv_color</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>0</td>
-      <td>3822.614000</td>
-      <td>134.603240</td>
-      <td>4.0</td>
-      <td>Pycr1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0.00000</td>
-      <td>8</td>
-      <td>0</td>
-      <td>1.00</td>
-      <td>True</td>
-      <td>#00B2FF</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>1</td>
-      <td>3865.508500</td>
-      <td>89.455734</td>
-      <td>5.0</td>
-      <td>Slc7a11</td>
-      <td>0</td>
-      <td>2</td>
-      <td>0</td>
-      <td>0.00000</td>
-      <td>4</td>
-      <td>0</td>
-      <td>1.00</td>
-      <td>True</td>
-      <td>#00B2FF</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2</td>
-      <td>3972.906500</td>
-      <td>163.452200</td>
-      <td>6.0</td>
-      <td>Cxcr3</td>
-      <td>0</td>
-      <td>3</td>
-      <td>0</td>
-      <td>0.00000</td>
-      <td>8</td>
-      <td>0</td>
-      <td>1.00</td>
-      <td>True</td>
-      <td>#00B3FF</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>3</td>
-      <td>3968.895800</td>
-      <td>33.911680</td>
-      <td>0.0</td>
-      <td>Ldhb</td>
-      <td>0</td>
-      <td>4</td>
-      <td>0</td>
-      <td>0.00000</td>
-      <td>2</td>
-      <td>0</td>
-      <td>1.00</td>
-      <td>True</td>
-      <td>#00B2FF</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>3664.242700</td>
-      <td>184.795300</td>
-      <td>4.0</td>
-      <td>Slc2a2</td>
-      <td>0</td>
-      <td>5</td>
-      <td>0</td>
-      <td>0.00000</td>
-      <td>5</td>
-      <td>0</td>
-      <td>1.00</td>
-      <td>True</td>
-      <td>#9B8844</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>17720900</th>
-      <td>17812303</td>
-      <td>3266.297176</td>
-      <td>6421.473477</td>
-      <td>6.0</td>
-      <td>B2m</td>
-      <td>0</td>
-      <td>17720901</td>
-      <td>0</td>
-      <td>1.00000</td>
-      <td>5</td>
-      <td>68623</td>
-      <td>1.00</td>
-      <td>False</td>
-      <td>#9C4D00</td>
-    </tr>
-    <tr>
-      <th>17720901</th>
-      <td>17812304</td>
-      <td>3499.033270</td>
-      <td>6353.866514</td>
-      <td>6.0</td>
-      <td>B2m</td>
-      <td>136929</td>
-      <td>17720902</td>
-      <td>136929</td>
-      <td>1.00000</td>
-      <td>5</td>
-      <td>69774</td>
-      <td>0.66</td>
-      <td>False</td>
-      <td>#A90000</td>
-    </tr>
-    <tr>
-      <th>17720902</th>
-      <td>17812305</td>
-      <td>3502.489212</td>
-      <td>6355.486490</td>
-      <td>6.0</td>
-      <td>B2m</td>
-      <td>54100</td>
-      <td>17720903</td>
-      <td>54100</td>
-      <td>1.00000</td>
-      <td>5</td>
-      <td>69873</td>
-      <td>1.00</td>
-      <td>False</td>
-      <td>#C90000</td>
-    </tr>
-    <tr>
-      <th>17720903</th>
-      <td>17812306</td>
-      <td>3848.083411</td>
-      <td>6330.754869</td>
-      <td>6.0</td>
-      <td>B2m</td>
-      <td>0</td>
-      <td>17720904</td>
-      <td>0</td>
-      <td>1.00000</td>
-      <td>5</td>
-      <td>111888</td>
-      <td>0.28</td>
-      <td>False</td>
-      <td>#974600</td>
-    </tr>
-    <tr>
-      <th>17720904</th>
-      <td>17812307</td>
-      <td>3905.538447</td>
-      <td>6375.466183</td>
-      <td>6.0</td>
-      <td>B2m</td>
-      <td>98745</td>
-      <td>17720905</td>
-      <td>98745</td>
-      <td>0.99785</td>
-      <td>7</td>
-      <td>72862</td>
-      <td>0.66</td>
-      <td>False</td>
-      <td>#E000F8</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Column1</th>
+<th data-quarto-table-cell-role="th">x</th>
+<th data-quarto-table-cell-role="th">y</th>
+<th data-quarto-table-cell-role="th">z</th>
+<th data-quarto-table-cell-role="th">gene</th>
+<th data-quarto-table-cell-role="th">mask</th>
+<th data-quarto-table-cell-role="th">molecule_id</th>
+<th data-quarto-table-cell-role="th">prior_segmentation</th>
+<th data-quarto-table-cell-role="th">confidence</th>
+<th data-quarto-table-cell-role="th">cluster</th>
+<th data-quarto-table-cell-role="th">cell</th>
+<th data-quarto-table-cell-role="th">assignment_confidence</th>
+<th data-quarto-table-cell-role="th">is_noise</th>
+<th data-quarto-table-cell-role="th">ncv_color</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0</td>
+<td>3822.614000</td>
+<td>134.603240</td>
+<td>4.0</td>
+<td>Pycr1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0.00000</td>
+<td>8</td>
+<td>0</td>
+<td>1.00</td>
+<td>True</td>
+<td>#00B2FF</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1</td>
+<td>3865.508500</td>
+<td>89.455734</td>
+<td>5.0</td>
+<td>Slc7a11</td>
+<td>0</td>
+<td>2</td>
+<td>0</td>
+<td>0.00000</td>
+<td>4</td>
+<td>0</td>
+<td>1.00</td>
+<td>True</td>
+<td>#00B2FF</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>2</td>
+<td>3972.906500</td>
+<td>163.452200</td>
+<td>6.0</td>
+<td>Cxcr3</td>
+<td>0</td>
+<td>3</td>
+<td>0</td>
+<td>0.00000</td>
+<td>8</td>
+<td>0</td>
+<td>1.00</td>
+<td>True</td>
+<td>#00B3FF</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>3</td>
+<td>3968.895800</td>
+<td>33.911680</td>
+<td>0.0</td>
+<td>Ldhb</td>
+<td>0</td>
+<td>4</td>
+<td>0</td>
+<td>0.00000</td>
+<td>2</td>
+<td>0</td>
+<td>1.00</td>
+<td>True</td>
+<td>#00B2FF</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>5</td>
+<td>3664.242700</td>
+<td>184.795300</td>
+<td>4.0</td>
+<td>Slc2a2</td>
+<td>0</td>
+<td>5</td>
+<td>0</td>
+<td>0.00000</td>
+<td>5</td>
+<td>0</td>
+<td>1.00</td>
+<td>True</td>
+<td>#9B8844</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17720900</td>
+<td>17812303</td>
+<td>3266.297176</td>
+<td>6421.473477</td>
+<td>6.0</td>
+<td>B2m</td>
+<td>0</td>
+<td>17720901</td>
+<td>0</td>
+<td>1.00000</td>
+<td>5</td>
+<td>68623</td>
+<td>1.00</td>
+<td>False</td>
+<td>#9C4D00</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">17720901</td>
+<td>17812304</td>
+<td>3499.033270</td>
+<td>6353.866514</td>
+<td>6.0</td>
+<td>B2m</td>
+<td>136929</td>
+<td>17720902</td>
+<td>136929</td>
+<td>1.00000</td>
+<td>5</td>
+<td>69774</td>
+<td>0.66</td>
+<td>False</td>
+<td>#A90000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17720902</td>
+<td>17812305</td>
+<td>3502.489212</td>
+<td>6355.486490</td>
+<td>6.0</td>
+<td>B2m</td>
+<td>54100</td>
+<td>17720903</td>
+<td>54100</td>
+<td>1.00000</td>
+<td>5</td>
+<td>69873</td>
+<td>1.00</td>
+<td>False</td>
+<td>#C90000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">17720903</td>
+<td>17812306</td>
+<td>3848.083411</td>
+<td>6330.754869</td>
+<td>6.0</td>
+<td>B2m</td>
+<td>0</td>
+<td>17720904</td>
+<td>0</td>
+<td>1.00000</td>
+<td>5</td>
+<td>111888</td>
+<td>0.28</td>
+<td>False</td>
+<td>#974600</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17720904</td>
+<td>17812307</td>
+<td>3905.538447</td>
+<td>6375.466183</td>
+<td>6.0</td>
+<td>B2m</td>
+<td>98745</td>
+<td>17720905</td>
+<td>98745</td>
+<td>0.99785</td>
+<td>7</td>
+<td>72862</td>
+<td>0.66</td>
+<td>False</td>
+<td>#E000F8</td>
+</tr>
+</tbody>
 </table>
+
 <p>17720905 rows × 14 columns</p>
 </div>
 </div>
@@ -1180,93 +1186,94 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>points <span class="op">=</span> points.set_index(<span class="st">'cell'</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>points</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="34">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>x</th>
-      <th>y</th>
-      <th>gene</th>
-    </tr>
-    <tr>
-      <th>cell</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>12569</th>
-      <td>3519.302200</td>
-      <td>155.489910</td>
-      <td>Klf6</td>
-    </tr>
-    <tr>
-      <th>12646</th>
-      <td>3512.186300</td>
-      <td>166.390230</td>
-      <td>Klf6</td>
-    </tr>
-    <tr>
-      <th>12765</th>
-      <td>3536.425300</td>
-      <td>170.964000</td>
-      <td>Klf6</td>
-    </tr>
-    <tr>
-      <th>12765</th>
-      <td>3524.853300</td>
-      <td>171.396010</td>
-      <td>Klf6</td>
-    </tr>
-    <tr>
-      <th>12834</th>
-      <td>3517.636500</td>
-      <td>171.748400</td>
-      <td>Klf6</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>68623</th>
-      <td>3266.297176</td>
-      <td>6421.473477</td>
-      <td>B2m</td>
-    </tr>
-    <tr>
-      <th>69774</th>
-      <td>3499.033270</td>
-      <td>6353.866514</td>
-      <td>B2m</td>
-    </tr>
-    <tr>
-      <th>69873</th>
-      <td>3502.489212</td>
-      <td>6355.486490</td>
-      <td>B2m</td>
-    </tr>
-    <tr>
-      <th>111888</th>
-      <td>3848.083411</td>
-      <td>6330.754869</td>
-      <td>B2m</td>
-    </tr>
-    <tr>
-      <th>72862</th>
-      <td>3905.538447</td>
-      <td>6375.466183</td>
-      <td>B2m</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">x</th>
+<th data-quarto-table-cell-role="th">y</th>
+<th data-quarto-table-cell-role="th">gene</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">cell</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12569</td>
+<td>3519.302200</td>
+<td>155.489910</td>
+<td>Klf6</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">12646</td>
+<td>3512.186300</td>
+<td>166.390230</td>
+<td>Klf6</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12765</td>
+<td>3536.425300</td>
+<td>170.964000</td>
+<td>Klf6</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">12765</td>
+<td>3524.853300</td>
+<td>171.396010</td>
+<td>Klf6</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12834</td>
+<td>3517.636500</td>
+<td>171.748400</td>
+<td>Klf6</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">68623</td>
+<td>3266.297176</td>
+<td>6421.473477</td>
+<td>B2m</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">69774</td>
+<td>3499.033270</td>
+<td>6353.866514</td>
+<td>B2m</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">69873</td>
+<td>3502.489212</td>
+<td>6355.486490</td>
+<td>B2m</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">111888</td>
+<td>3848.083411</td>
+<td>6330.754869</td>
+<td>B2m</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">72862</td>
+<td>3905.538447</td>
+<td>6375.466183</td>
+<td>B2m</td>
+</tr>
+</tbody>
 </table>
+
 <p>16108473 rows × 3 columns</p>
 </div>
 </div>
@@ -1283,271 +1290,270 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>CPU times: user 44min 42s, sys: 7.81 s, total: 44min 50s
 Wall time: 44min 49s</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code></code></pre>
-</div>
 </div>
 <div class="cell" data-execution_count="37">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fig = plt.figure(figsize=(8,5))</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ax = fig.subplots()</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.scatter(points.x, points.y)</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># gpd.GeoSeries(poly).boundary.plot(ax = ax)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fig = plt.figure(figsize=(8,5))</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ax = fig.subplots()</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.scatter(points.x, points.y)</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># gpd.GeoSeries(poly).boundary.plot(ax = ax)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="38">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>poly <span class="op">=</span> gpd.GeoDataFrame({<span class="st">'cell_shape'</span>: poly})</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>poly</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>poly <span class="op">=</span> gpd.GeoDataFrame({<span class="st">'cell_shape'</span>: poly})</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>poly</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="38">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>cell_shape</th>
-    </tr>
-    <tr>
-      <th>cell</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1</th>
-      <td>POLYGON ((121.90738 1410.9453, 125.958466 1414...</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>POLYGON ((119.71684 1412.4857, 118.00169 1416....</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>POLYGON ((145.00394 1410.3529, 145.53467 1406....</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>POLYGON ((143.04446 1401.9124, 142.22736 1402....</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>POLYGON ((141.25397 1406.9685, 140.95296 1407....</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>120690</th>
-      <td>POLYGON EMPTY</td>
-    </tr>
-    <tr>
-      <th>120691</th>
-      <td>POLYGON EMPTY</td>
-    </tr>
-    <tr>
-      <th>120692</th>
-      <td>POLYGON EMPTY</td>
-    </tr>
-    <tr>
-      <th>120693</th>
-      <td>POLYGON EMPTY</td>
-    </tr>
-    <tr>
-      <th>120694</th>
-      <td>POLYGON EMPTY</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">cell_shape</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">cell</th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>POLYGON ((121.90738 1410.9453, 125.958466 1414...</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2</td>
+<td>POLYGON ((119.71684 1412.4857, 118.00169 1416....</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>POLYGON ((145.00394 1410.3529, 145.53467 1406....</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4</td>
+<td>POLYGON ((143.04446 1401.9124, 142.22736 1402....</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5</td>
+<td>POLYGON ((141.25397 1406.9685, 140.95296 1407....</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">120690</td>
+<td>POLYGON EMPTY</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">120691</td>
+<td>POLYGON EMPTY</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">120692</td>
+<td>POLYGON EMPTY</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">120693</td>
+<td>POLYGON EMPTY</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">120694</td>
+<td>POLYGON EMPTY</td>
+</tr>
+</tbody>
 </table>
+
 <p>120694 rows × 1 columns</p>
 </div>
 </div>
 </div>
 <div class="cell" data-execution_count="39">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>cells.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>cells.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="39">
 <pre><code>(120694, 8)</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="40">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># merge cells and poly</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>obs <span class="op">=</span> cells.join(poly)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>obs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># merge cells and poly</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>obs <span class="op">=</span> cells.join(poly)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>obs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="40">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>x</th>
-      <th>y</th>
-      <th>cluster</th>
-      <th>n_transcripts</th>
-      <th>density</th>
-      <th>elongation</th>
-      <th>area</th>
-      <th>avg_confidence</th>
-      <th>cell_shape</th>
-    </tr>
-    <tr>
-      <th>cell</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1</th>
-      <td>130.347934</td>
-      <td>1410.084088</td>
-      <td>5</td>
-      <td>507</td>
-      <td>3.197</td>
-      <td>1.744</td>
-      <td>158.600</td>
-      <td>1.0000</td>
-      <td>POLYGON ((121.90738 1410.9453, 125.958466 1414...</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>123.784174</td>
-      <td>1416.490865</td>
-      <td>2</td>
-      <td>416</td>
-      <td>4.164</td>
-      <td>1.319</td>
-      <td>99.900</td>
-      <td>0.9999</td>
-      <td>POLYGON ((119.71684 1412.4857, 118.00169 1416....</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>138.937365</td>
-      <td>1407.709821</td>
-      <td>5</td>
-      <td>393</td>
-      <td>2.659</td>
-      <td>1.545</td>
-      <td>147.800</td>
-      <td>0.9996</td>
-      <td>POLYGON ((145.00394 1410.3529, 145.53467 1406....</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>145.826591</td>
-      <td>1406.267540</td>
-      <td>2</td>
-      <td>172</td>
-      <td>2.533</td>
-      <td>1.929</td>
-      <td>67.900</td>
-      <td>1.0000</td>
-      <td>POLYGON ((143.04446 1401.9124, 142.22736 1402....</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>142.976419</td>
-      <td>1409.124042</td>
-      <td>2</td>
-      <td>16</td>
-      <td>2.022</td>
-      <td>4.211</td>
-      <td>7.914</td>
-      <td>1.0000</td>
-      <td>POLYGON ((141.25397 1406.9685, 140.95296 1407....</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>120690</th>
-      <td>2691.674300</td>
-      <td>669.079100</td>
-      <td>6</td>
-      <td>1</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>1.0000</td>
-      <td>POLYGON EMPTY</td>
-    </tr>
-    <tr>
-      <th>120691</th>
-      <td>5225.633000</td>
-      <td>5751.088000</td>
-      <td>6</td>
-      <td>1</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.9999</td>
-      <td>POLYGON EMPTY</td>
-    </tr>
-    <tr>
-      <th>120692</th>
-      <td>1583.965900</td>
-      <td>2634.434350</td>
-      <td>6</td>
-      <td>2</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.9998</td>
-      <td>POLYGON EMPTY</td>
-    </tr>
-    <tr>
-      <th>120693</th>
-      <td>3159.905300</td>
-      <td>5049.000000</td>
-      <td>6</td>
-      <td>1</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.9775</td>
-      <td>POLYGON EMPTY</td>
-    </tr>
-    <tr>
-      <th>120694</th>
-      <td>1896.185200</td>
-      <td>1018.834170</td>
-      <td>7</td>
-      <td>1</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>0.9999</td>
-      <td>POLYGON EMPTY</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">x</th>
+<th data-quarto-table-cell-role="th">y</th>
+<th data-quarto-table-cell-role="th">cluster</th>
+<th data-quarto-table-cell-role="th">n_transcripts</th>
+<th data-quarto-table-cell-role="th">density</th>
+<th data-quarto-table-cell-role="th">elongation</th>
+<th data-quarto-table-cell-role="th">area</th>
+<th data-quarto-table-cell-role="th">avg_confidence</th>
+<th data-quarto-table-cell-role="th">cell_shape</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">cell</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>130.347934</td>
+<td>1410.084088</td>
+<td>5</td>
+<td>507</td>
+<td>3.197</td>
+<td>1.744</td>
+<td>158.600</td>
+<td>1.0000</td>
+<td>POLYGON ((121.90738 1410.9453, 125.958466 1414...</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2</td>
+<td>123.784174</td>
+<td>1416.490865</td>
+<td>2</td>
+<td>416</td>
+<td>4.164</td>
+<td>1.319</td>
+<td>99.900</td>
+<td>0.9999</td>
+<td>POLYGON ((119.71684 1412.4857, 118.00169 1416....</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>138.937365</td>
+<td>1407.709821</td>
+<td>5</td>
+<td>393</td>
+<td>2.659</td>
+<td>1.545</td>
+<td>147.800</td>
+<td>0.9996</td>
+<td>POLYGON ((145.00394 1410.3529, 145.53467 1406....</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4</td>
+<td>145.826591</td>
+<td>1406.267540</td>
+<td>2</td>
+<td>172</td>
+<td>2.533</td>
+<td>1.929</td>
+<td>67.900</td>
+<td>1.0000</td>
+<td>POLYGON ((143.04446 1401.9124, 142.22736 1402....</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5</td>
+<td>142.976419</td>
+<td>1409.124042</td>
+<td>2</td>
+<td>16</td>
+<td>2.022</td>
+<td>4.211</td>
+<td>7.914</td>
+<td>1.0000</td>
+<td>POLYGON ((141.25397 1406.9685, 140.95296 1407....</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">120690</td>
+<td>2691.674300</td>
+<td>669.079100</td>
+<td>6</td>
+<td>1</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>1.0000</td>
+<td>POLYGON EMPTY</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">120691</td>
+<td>5225.633000</td>
+<td>5751.088000</td>
+<td>6</td>
+<td>1</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.9999</td>
+<td>POLYGON EMPTY</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">120692</td>
+<td>1583.965900</td>
+<td>2634.434350</td>
+<td>6</td>
+<td>2</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.9998</td>
+<td>POLYGON EMPTY</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">120693</td>
+<td>3159.905300</td>
+<td>5049.000000</td>
+<td>6</td>
+<td>1</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.9775</td>
+<td>POLYGON EMPTY</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">120694</td>
+<td>1896.185200</td>
+<td>1018.834170</td>
+<td>7</td>
+<td>1</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>0.9999</td>
+<td>POLYGON EMPTY</td>
+</tr>
+</tbody>
 </table>
+
 <p>120694 rows × 9 columns</p>
 </div>
 </div>
 </div>
 <p>We also want to add the transcripts to <code>uns</code> in anndata. We need to keep the columns gene, cell, x and y</p>
 <div class="cell" data-execution_count="41">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>uns <span class="op">=</span> {</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'points'</span>: transcripts[[<span class="st">'gene'</span>, <span class="st">'cell'</span>, <span class="st">'x'</span>, <span class="st">'y'</span>]]</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>uns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>uns <span class="op">=</span> {</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'points'</span>: transcripts[[<span class="st">'gene'</span>, <span class="st">'cell'</span>, <span class="st">'x'</span>, <span class="st">'y'</span>]]</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>uns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="41">
 <pre><code>{'points':              gene    cell            x            y
  0           Pycr1       0  3822.614000   134.603240
@@ -1566,174 +1572,176 @@ Wall time: 44min 49s</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="42">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>uns[<span class="st">'points'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>uns[<span class="st">'points'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="42">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>gene</th>
-      <th>cell</th>
-      <th>x</th>
-      <th>y</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Pycr1</td>
-      <td>0</td>
-      <td>3822.614000</td>
-      <td>134.603240</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Slc7a11</td>
-      <td>0</td>
-      <td>3865.508500</td>
-      <td>89.455734</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Cxcr3</td>
-      <td>0</td>
-      <td>3972.906500</td>
-      <td>163.452200</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Ldhb</td>
-      <td>0</td>
-      <td>3968.895800</td>
-      <td>33.911680</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Slc2a2</td>
-      <td>0</td>
-      <td>3664.242700</td>
-      <td>184.795300</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>17720900</th>
-      <td>B2m</td>
-      <td>68623</td>
-      <td>3266.297176</td>
-      <td>6421.473477</td>
-    </tr>
-    <tr>
-      <th>17720901</th>
-      <td>B2m</td>
-      <td>69774</td>
-      <td>3499.033270</td>
-      <td>6353.866514</td>
-    </tr>
-    <tr>
-      <th>17720902</th>
-      <td>B2m</td>
-      <td>69873</td>
-      <td>3502.489212</td>
-      <td>6355.486490</td>
-    </tr>
-    <tr>
-      <th>17720903</th>
-      <td>B2m</td>
-      <td>111888</td>
-      <td>3848.083411</td>
-      <td>6330.754869</td>
-    </tr>
-    <tr>
-      <th>17720904</th>
-      <td>B2m</td>
-      <td>72862</td>
-      <td>3905.538447</td>
-      <td>6375.466183</td>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">gene</th>
+<th data-quarto-table-cell-role="th">cell</th>
+<th data-quarto-table-cell-role="th">x</th>
+<th data-quarto-table-cell-role="th">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Pycr1</td>
+<td>0</td>
+<td>3822.614000</td>
+<td>134.603240</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Slc7a11</td>
+<td>0</td>
+<td>3865.508500</td>
+<td>89.455734</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Cxcr3</td>
+<td>0</td>
+<td>3972.906500</td>
+<td>163.452200</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Ldhb</td>
+<td>0</td>
+<td>3968.895800</td>
+<td>33.911680</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Slc2a2</td>
+<td>0</td>
+<td>3664.242700</td>
+<td>184.795300</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17720900</td>
+<td>B2m</td>
+<td>68623</td>
+<td>3266.297176</td>
+<td>6421.473477</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">17720901</td>
+<td>B2m</td>
+<td>69774</td>
+<td>3499.033270</td>
+<td>6353.866514</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17720902</td>
+<td>B2m</td>
+<td>69873</td>
+<td>3502.489212</td>
+<td>6355.486490</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">17720903</td>
+<td>B2m</td>
+<td>111888</td>
+<td>3848.083411</td>
+<td>6330.754869</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17720904</td>
+<td>B2m</td>
+<td>72862</td>
+<td>3905.538447</td>
+<td>6375.466183</td>
+</tr>
+</tbody>
 </table>
+
 <p>17720905 rows × 4 columns</p>
 </div>
 </div>
 </div>
 <div class="cell" data-execution_count="43">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>var <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Symbol'</span>: counts.index</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>var <span class="op">=</span> var.set_index(<span class="st">'Symbol'</span>)</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>var</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>var <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Symbol'</span>: counts.index</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>var <span class="op">=</span> var.set_index(<span class="st">'Symbol'</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>var</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="43">
-
 <div>
 
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-    </tr>
-    <tr>
-      <th>Symbol</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Abca2</th>
-    </tr>
-    <tr>
-      <th>Abcg1</th>
-    </tr>
-    <tr>
-      <th>Acly</th>
-    </tr>
-    <tr>
-      <th>Acta2</th>
-    </tr>
-    <tr>
-      <th>Adam12</th>
-    </tr>
-    <tr>
-      <th>...</th>
-    </tr>
-    <tr>
-      <th>Zfas1</th>
-    </tr>
-    <tr>
-      <th>Zfp683</th>
-    </tr>
-    <tr>
-      <th>Znrf2</th>
-    </tr>
-    <tr>
-      <th>Zp3</th>
-    </tr>
-    <tr>
-      <th>mt-Nd4l</th>
-    </tr>
-  </tbody>
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Abca2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Abcg1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Acly</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Acta2</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Adam12</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Zfas1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Zfp683</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Znrf2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Zp3</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">mt-Nd4l</td>
+</tr>
+</tbody>
 </table>
+
 <p>499 rows × 0 columns</p>
 </div>
 </div>
 </div>
 <p>Let’s create a first <code>anndata</code> obeject.</p>
 <div class="cell" data-execution_count="44">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>adata <span class="op">=</span> ad.AnnData(</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> counts.transpose().to_numpy(dtype <span class="op">=</span> np.float32),</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    obs <span class="op">=</span> obs,</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    obsm<span class="op">=</span>{<span class="st">"spatial"</span>: cells[[<span class="st">'x'</span>, <span class="st">'y'</span>]].to_numpy()},</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    uns <span class="op">=</span> uns,</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    var <span class="op">=</span> var</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>adata</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>adata <span class="op">=</span> ad.AnnData(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> counts.transpose().to_numpy(dtype <span class="op">=</span> np.float32),</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    obs <span class="op">=</span> obs,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    obsm<span class="op">=</span>{<span class="st">"spatial"</span>: cells[[<span class="st">'x'</span>, <span class="st">'y'</span>]].to_numpy()},</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    uns <span class="op">=</span> uns,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    var <span class="op">=</span> var</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>adata</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>/projects/ps-yeolab5/t_cell_p01/home/mheeg/mambaforge/envs/cellpose/lib/python3.8/site-packages/anndata/_core/anndata.py:121: ImplicitModificationWarning: Transforming to str index.
   warnings.warn("Transforming to str index.", ImplicitModificationWarning)</code></pre>
@@ -1746,34 +1754,34 @@ Wall time: 44min 49s</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="45">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>sc.pl.embedding(adata, basis<span class="op">=</span><span class="st">"spatial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>sc.pl.embedding(adata, basis<span class="op">=</span><span class="st">"spatial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><img src="08_create_anndata_files/figure-html/cell-21-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <div class="cell" data-execution_count="46">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>sc.pl.embedding(adata, color<span class="op">=</span><span class="st">"Fabp2"</span>, basis<span class="op">=</span><span class="st">"spatial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>sc.pl.embedding(adata, color<span class="op">=</span><span class="st">"Fabp2"</span>, basis<span class="op">=</span><span class="st">"spatial"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><img src="08_create_anndata_files/figure-html/cell-22-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <div class="cell" data-execution_count="47">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert geometry from GeoSeries to list for h5ad serialization compatibility</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>adata <span class="op">=</span> adata.copy()</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>adata.obs <span class="op">=</span> adata.obs.<span class="bu">apply</span>(</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> col: col.<span class="bu">apply</span>(<span class="kw">lambda</span> val: val.wkt <span class="cf">if</span> val <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="cf">else</span> val).astype(</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">str</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col.astype(<span class="bu">str</span>).<span class="bu">str</span>.startswith(<span class="st">"POLYGON"</span>).<span class="bu">any</span>()</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> col</span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert geometry from GeoSeries to list for h5ad serialization compatibility</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>adata <span class="op">=</span> adata.copy()</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>adata.obs <span class="op">=</span> adata.obs.<span class="bu">apply</span>(</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> col: col.<span class="bu">apply</span>(<span class="kw">lambda</span> val: val.wkt <span class="cf">if</span> val <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="cf">else</span> val).astype(</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>        <span class="bu">str</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col.astype(<span class="bu">str</span>).<span class="bu">str</span>.startswith(<span class="st">"POLYGON"</span>).<span class="bu">any</span>()</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> col</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="48">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>adata.write(filename<span class="op">=</span>path<span class="op">+</span><span class="st">"anndata.h5ad"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>adata.write(filename<span class="op">=</span>path<span class="op">+</span><span class="st">"anndata.h5ad"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="49">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>adata.obs[<span class="st">'cell_shape'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>adata.obs[<span class="st">'cell_shape'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="49">
 <pre><code>cell
 1         POLYGON ((121.90738 1410.9453, 125.958466 1414...
@@ -1794,47 +1802,47 @@ Categories (117869, object): ['MULTIPOLYGON (((2277.3108 1000.97864, 2278.28...,
 <section id="create-plots-with-the-new-alphashape-cell-boundaries" class="level1">
 <h1>Create plots with the new alphashape cell boundaries</h1>
 <div class="cell" data-execution_count="50">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_rescaling_function():</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Here we create a rescaling function that takes three argument: x, y, z.</span></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co">    These are the coordinates of out point. We will apply the transformation</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co">    defined in 'micron_to_mosaic_pixel_transform' to convert the micron to pixel</span></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co">    and then rescale it with the same scaling factor used in script '01'</span></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the get the size of the original image, we can take any of the images</span></span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># they are all the same size</span></span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    size_original_image <span class="op">=</span> tifffile.imread(<span class="st">"../Merlin_output/images/mosaic_Cellbound2_z0.tif"</span>).shape</span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># rescaled image</span></span>
-<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    size_rescaled_image <span class="op">=</span> tifffile.imread(<span class="st">"image/full_stack.tif"</span>).shape</span>
-<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># since this is the stacked image, we dont need to keep all dimensions.</span></span>
-<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>    size_rescaled_image <span class="op">=</span> size_rescaled_image[<span class="dv">2</span>:<span class="dv">4</span>]</span>
-<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>    scale_y <span class="op">=</span> size_original_image[<span class="dv">0</span>] <span class="op">/</span> size_rescaled_image[<span class="dv">0</span>]</span>
-<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>    scale_x <span class="op">=</span> size_original_image[<span class="dv">1</span>] <span class="op">/</span> size_rescaled_image[<span class="dv">1</span>]</span>
-<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>    rescale <span class="op">=</span> np.array([scale_x, scale_y, <span class="dv">1</span>])</span>
-<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>    mmpt <span class="op">=</span> pd.read_csv(</span>
-<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"../Merlin_output/images/micron_to_mosaic_pixel_transform.csv"</span>, </span>
-<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>        header<span class="op">=</span><span class="va">None</span>, </span>
-<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>        sep<span class="op">=</span><span class="st">' '</span></span>
-<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>    mmpt <span class="op">=</span> np.array(mmpt)</span>
-<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> rescale_fun(x,y,z):</span>
-<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a>        points <span class="op">=</span> np.array([x,y,z])</span>
-<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>        <span class="co"># coordinates to pixel</span></span>
-<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>        points <span class="op">=</span> np.diag(mmpt) <span class="op">*</span> points.T <span class="op">+</span> np.append(mmpt[<span class="dv">0</span>:<span class="dv">2</span>,<span class="dv">2</span>], <span class="dv">0</span>)</span>
-<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a>        <span class="co"># apply our scaling</span></span>
-<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a>        points <span class="op">=</span> points <span class="op">/</span> rescale</span>
-<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span>(points.T)</span>
-<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>(rescale_fun)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_rescaling_function():</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Here we create a rescaling function that takes three argument: x, y, z.</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co">    These are the coordinates of out point. We will apply the transformation</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co">    defined in 'micron_to_mosaic_pixel_transform' to convert the micron to pixel</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co">    and then rescale it with the same scaling factor used in script '01'</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the get the size of the original image, we can take any of the images</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># they are all the same size</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    size_original_image <span class="op">=</span> tifffile.imread(<span class="st">"../Merlin_output/images/mosaic_Cellbound2_z0.tif"</span>).shape</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># rescaled image</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    size_rescaled_image <span class="op">=</span> tifffile.imread(<span class="st">"image/full_stack.tif"</span>).shape</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># since this is the stacked image, we dont need to keep all dimensions.</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>    size_rescaled_image <span class="op">=</span> size_rescaled_image[<span class="dv">2</span>:<span class="dv">4</span>]</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    scale_y <span class="op">=</span> size_original_image[<span class="dv">0</span>] <span class="op">/</span> size_rescaled_image[<span class="dv">0</span>]</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>    scale_x <span class="op">=</span> size_original_image[<span class="dv">1</span>] <span class="op">/</span> size_rescaled_image[<span class="dv">1</span>]</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>    rescale <span class="op">=</span> np.array([scale_x, scale_y, <span class="dv">1</span>])</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>    mmpt <span class="op">=</span> pd.read_csv(</span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"../Merlin_output/images/micron_to_mosaic_pixel_transform.csv"</span>, </span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>        header<span class="op">=</span><span class="va">None</span>, </span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>        sep<span class="op">=</span><span class="st">' '</span></span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>    mmpt <span class="op">=</span> np.array(mmpt)</span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> rescale_fun(x,y,z):</span>
+<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a>        points <span class="op">=</span> np.array([x,y,z])</span>
+<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a>        <span class="co"># coordinates to pixel</span></span>
+<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a>        points <span class="op">=</span> np.diag(mmpt) <span class="op">*</span> points.T <span class="op">+</span> np.append(mmpt[<span class="dv">0</span>:<span class="dv">2</span>,<span class="dv">2</span>], <span class="dv">0</span>)</span>
+<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a>        <span class="co"># apply our scaling</span></span>
+<span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a>        points <span class="op">=</span> points <span class="op">/</span> rescale</span>
+<span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span>(points.T)</span>
+<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>(rescale_fun)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="51">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>rescale_fun <span class="op">=</span> create_rescaling_function()</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>rescale_fun</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>rescale_fun <span class="op">=</span> create_rescaling_function()</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>rescale_fun</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Shaped series: series shape does not match page shape</code></pre>
 </div>
@@ -1843,43 +1851,43 @@ Categories (117869, object): ['MULTIPOLYGON (((2277.3108 1000.97864, 2278.28...,
 </div>
 </div>
 <div class="cell" data-execution_count="52">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> tifffile.imread(<span class="st">"cellpose_segmentation/full_stack.tif"</span>)[<span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> tifffile.imread(<span class="st">"cellpose_segmentation/full_stack.tif"</span>)[<span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="53">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_image(img):</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">""" Function to format the np array for plotting</span></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Takes a np array of dimensions (2 x Y x X) and</span></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="co">    formats it to Y x X x 3.</span></span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Third color is filled with zeros.</span></span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># move the RGB to the third dimension</span></span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> np.transpose(img, [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">0</span>])</span>
-<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>    zeros <span class="op">=</span> np.zeros(</span>
-<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>                [img.shape[<span class="dv">0</span>], img.shape[<span class="dv">1</span>], <span class="dv">1</span>],</span>
-<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>                dtype <span class="op">=</span> np.uint8</span>
-<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># fill R(ed) with zeros</span></span>
-<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> np.concatenate(</span>
-<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>        [zeros,img],</span>
-<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>        axis <span class="op">=</span> <span class="dv">2</span></span>
-<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># scale the colors from 0 to 255 to make it more intense</span></span>
-<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>    img[:,:,<span class="dv">1</span>] <span class="op">=</span> np.uint8(img[:,:,<span class="dv">1</span>] <span class="op">/</span> np.<span class="bu">max</span>(img[:,:,<span class="dv">1</span>]) <span class="op">*</span> <span class="dv">255</span>)</span>
-<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>    img[:,:,<span class="dv">2</span>] <span class="op">=</span> np.uint8(img[:,:,<span class="dv">2</span>] <span class="op">/</span> np.<span class="bu">max</span>(img[:,:,<span class="dv">2</span>]) <span class="op">*</span> <span class="dv">255</span>)</span>
-<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_image(img):</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">""" Function to format the np array for plotting</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Takes a np array of dimensions (2 x Y x X) and</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="co">    formats it to Y x X x 3.</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Third color is filled with zeros.</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># move the RGB to the third dimension</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> np.transpose(img, [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">0</span>])</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>    zeros <span class="op">=</span> np.zeros(</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>                [img.shape[<span class="dv">0</span>], img.shape[<span class="dv">1</span>], <span class="dv">1</span>],</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>                dtype <span class="op">=</span> np.uint8</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># fill R(ed) with zeros</span></span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> np.concatenate(</span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>        [zeros,img],</span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>        axis <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># scale the colors from 0 to 255 to make it more intense</span></span>
+<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>    img[:,:,<span class="dv">1</span>] <span class="op">=</span> np.uint8(img[:,:,<span class="dv">1</span>] <span class="op">/</span> np.<span class="bu">max</span>(img[:,:,<span class="dv">1</span>]) <span class="op">*</span> <span class="dv">255</span>)</span>
+<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a>    img[:,:,<span class="dv">2</span>] <span class="op">=</span> np.uint8(img[:,:,<span class="dv">2</span>] <span class="op">/</span> np.<span class="bu">max</span>(img[:,:,<span class="dv">2</span>]) <span class="op">*</span> <span class="dv">255</span>)</span>
+<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb37-28"><a href="#cb37-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="105">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remove empty polygons, these cause an error for plotting</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>poly_draw <span class="op">=</span> gpd.GeoSeries(poly.cell_shape)</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>poly_draw <span class="op">=</span> poly_draw[<span class="op">~</span>poly_draw.is_empty]</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>poly_draw</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remove empty polygons, these cause an error for plotting</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>poly_draw <span class="op">=</span> gpd.GeoSeries(poly.cell_shape)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>poly_draw <span class="op">=</span> poly_draw[<span class="op">~</span>poly_draw.is_empty]</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>poly_draw</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="105">
 <pre><code>cell
 1         POLYGON ((121.907 1410.945, 125.958 1414.014, ...
@@ -1898,32 +1906,32 @@ Name: cell_shape, Length: 117868, dtype: geometry</code></pre>
 </div>
 <p>In order to plot the polygon, we need to transform the position to the image pixed for the polygons too. The polygons only have x and y (2d). But we can easlily create the 2d wrapper function around <code>rescale_fun</code>. This then can be applied to the Geopandas polygon (see the example below)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rescale_fun_2d(x,y):</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    ones <span class="op">=</span> np.ones(<span class="bu">len</span>(x))</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> rescale_fun(x,y,ones)</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>(res[<span class="dv">0</span>],res[<span class="dv">1</span>])</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rescale_fun_2d(x,y):</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    ones <span class="op">=</span> np.ones(<span class="bu">len</span>(x))</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> rescale_fun(x,y,ones)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>(res[<span class="dv">0</span>],res[<span class="dv">1</span>])</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize <span class="op">=</span> (<span class="dv">250</span>,<span class="dv">250</span>))</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>)</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"&gt;&gt;&gt; plotting image"</span>)</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>ax.imshow(</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    make_image(img),</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    interpolation <span class="op">=</span> <span class="st">"nearest"</span>,</span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    origin<span class="op">=</span><span class="st">'lower'</span></span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"&gt;&gt;&gt; plotting transcripts"</span>)</span>
-<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
-<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>    rescale_fun(transcripts.x, transcripts.y, transcripts.z)[<span class="dv">0</span>],</span>
-<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>    rescale_fun(transcripts.x, transcripts.y, transcripts.z)[<span class="dv">1</span>],</span>
-<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="fl">0.05</span>, c<span class="op">=</span>transcripts.ncv_color)</span>
-<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"&gt;&gt;&gt; plotting cell boundaries"</span>)</span>
-<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>poly_draw.geometry.<span class="bu">apply</span>(<span class="kw">lambda</span> x: transform(rescale_fun_2d, x)).boundary.plot(ax <span class="op">=</span> ax, linewidth<span class="op">=</span><span class="fl">0.5</span>, edgecolor<span class="op">=</span><span class="st">"red"</span>)</span>
-<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>ax.axis(<span class="st">'off'</span>)</span>
-<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"&gt;&gt;&gt; saving jpg"</span>)</span>
-<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>fig.savefig(path<span class="op">+</span><span class="st">'/alphashape.jpg'</span>, dpi <span class="op">=</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize <span class="op">=</span> (<span class="dv">250</span>,<span class="dv">250</span>))</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"&gt;&gt;&gt; plotting image"</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>ax.imshow(</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    make_image(img),</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    interpolation <span class="op">=</span> <span class="st">"nearest"</span>,</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>    origin<span class="op">=</span><span class="st">'lower'</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"&gt;&gt;&gt; plotting transcripts"</span>)</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>    rescale_fun(transcripts.x, transcripts.y, transcripts.z)[<span class="dv">0</span>],</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>    rescale_fun(transcripts.x, transcripts.y, transcripts.z)[<span class="dv">1</span>],</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="fl">0.05</span>, c<span class="op">=</span>transcripts.ncv_color)</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"&gt;&gt;&gt; plotting cell boundaries"</span>)</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>poly_draw.geometry.<span class="bu">apply</span>(<span class="kw">lambda</span> x: transform(rescale_fun_2d, x)).boundary.plot(ax <span class="op">=</span> ax, linewidth<span class="op">=</span><span class="fl">0.5</span>, edgecolor<span class="op">=</span><span class="st">"red"</span>)</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>ax.axis(<span class="st">'off'</span>)</span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"&gt;&gt;&gt; saving jpg"</span>)</span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>fig.savefig(path<span class="op">+</span><span class="st">'/alphashape.jpg'</span>, dpi <span class="op">=</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
@@ -2072,9 +2080,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -2139,6 +2161,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -2177,12 +2285,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/spatial\.heeg\.io/);
+      var filterRegex = new RegExp("spatial\.heeg\.io");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
-    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -2209,13 +2317,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">
-        <ul class="footer-items list-unstyled">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
     <li class="nav-item">
     <a class="nav-link" href="../../../about.html">About</a>
   </li>  
 </ul>
-      </div>
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
   </div>
 </footer>
 

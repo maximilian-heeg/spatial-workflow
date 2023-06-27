@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Maximilian Heeg">
-<meta name="dcterms.date" content="2023-03-03">
+<meta name="dcterms.date" content="2023-06-27">
 <meta name="description" content="Train a cellpose 2 model for our dataset">
 
 <title>Spatial workflow - Train a model</title>
@@ -20,9 +20,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -49,43 +50,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -125,14 +96,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
 
 <meta name="twitter:title" content="Spatial workflow - Train a model">
 <meta name="twitter:description" content="Train a cellpose 2 model for our dataset">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="spatial.heeg.io/workflow/cell_segmentation/cellpose/02_train_cellpose_files/figure-html/cell-7-output-1.png">
+<meta name="twitter:image-height" content="906">
+<meta name="twitter:image-width" content="1907">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="floating nav-fixed">
@@ -152,33 +127,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../../index.html">
+    <a class="nav-link" href="../../../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../workflow/">
+    <a class="nav-link" href="../../../workflow/" rel="" target="">
  <span class="menu-text">Workflow</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../about.html">
+    <a class="nav-link" href="../../../about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../../contribute.html">
+    <a class="nav-link" href="../../../contribute.html" rel="" target="">
  <span class="menu-text">Contribute</span></a>
   </li>  
 </ul>
-              <div class="quarto-toggle-container">
-                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
-              </div>
+            <div class="quarto-navbar-tools ms-auto">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Train a model</h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../workflow/cell_segmentation/index.html">Cell segmentation</a></li><li class="breadcrumb-item"><a href="../../../workflow/cell_segmentation/cellpose/index.html">Cellpose</a></li><li class="breadcrumb-item"><a href="../../../workflow/cell_segmentation/cellpose/train_model.html">Train a model</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav>
@@ -186,118 +166,135 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-      <div class="mt-2 flex-shrink-0 align-items-center">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/auxiliary/index.html" class="sidebar-item-text sidebar-link">Quantify auxiliary stainings</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a href="../../../workflow/auxiliary/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quantify auxiliary stainings</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/auxiliary/quantify.html" class="sidebar-item-text sidebar-link">Quantification</a>
+  <a href="../../../workflow/auxiliary/quantify.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quantification</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/auxiliary/validation.html" class="sidebar-item-text sidebar-link">Validation</a>
+  <a href="../../../workflow/auxiliary/validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Validation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/auxiliary/Combine_Transcripts.html" class="sidebar-item-text sidebar-link">Combine with MerFISH</a>
+  <a href="../../../workflow/auxiliary/Combine_Transcripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Combine with MerFISH</span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/index.html" class="sidebar-item-text sidebar-link">Cell segmentation</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a href="../../../workflow/cell_segmentation/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cell segmentation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/cellpose/index.html" class="sidebar-item-text sidebar-link">Cellpose</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a href="../../../workflow/cell_segmentation/cellpose/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cellpose</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/create_stack.html" class="sidebar-item-text sidebar-link">Prepare the images</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/create_stack.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prepare the images</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/train_model.html" class="sidebar-item-text sidebar-link active">Train a model</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/train_model.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Train a model</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/run_cellpose.html" class="sidebar-item-text sidebar-link">Run Cellpose</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/run_cellpose.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Run Cellpose</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html" class="sidebar-item-text sidebar-link">Assing transcripts to cells</a>
+  <a href="../../../workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assing transcripts to cells</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/baysor/index.html" class="sidebar-item-text sidebar-link">Baysor</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <a href="../../../workflow/cell_segmentation/baysor/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Baysor</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/baysor/script.html" class="sidebar-item-text sidebar-link">Script</a>
+  <a href="../../../workflow/cell_segmentation/baysor/script.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Script</span></a>
   </div>
 </li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/cell_segmentation/anndata/index.html" class="sidebar-item-text sidebar-link">Anndata</a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <a href="../../../workflow/cell_segmentation/anndata/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anndata</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/segmentation_plots.html" class="sidebar-item-text sidebar-link">Plots for cell segmentation</a>
+  <a href="../../../workflow/cell_segmentation/anndata/segmentation_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Plots for cell segmentation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/compare_baysor_runs.html" class="sidebar-item-text sidebar-link">Compare the different segmentation runs</a>
+  <a href="../../../workflow/cell_segmentation/anndata/compare_baysor_runs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compare the different segmentation runs</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/create_anndata.html" class="sidebar-item-text sidebar-link">Create Anndata</a>
+  <a href="../../../workflow/cell_segmentation/anndata/create_anndata.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Create Anndata</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/cell_segmentation/anndata/unroll.html" class="sidebar-item-text sidebar-link"><em>Bonus:</em> Unrolling</a>
+  <a href="../../../workflow/cell_segmentation/anndata/unroll.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><em>Bonus:</em> Unrolling</span></a>
   </div>
 </li>
       </ul>
@@ -306,30 +303,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../../../workflow/analysis/index.html" class="sidebar-item-text sidebar-link">Analysis</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <a href="../../../workflow/analysis/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/analysis/qc.html" class="sidebar-item-text sidebar-link">QC</a>
+  <a href="../../../workflow/analysis/qc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">QC</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/analysis/umap.html" class="sidebar-item-text sidebar-link">Annotation</a>
+  <a href="../../../workflow/analysis/umap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Annotation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/analysis/anndata_zarr.html" class="sidebar-item-text sidebar-link">Anndata Zarr export</a>
+  <a href="../../../workflow/analysis/anndata_zarr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Anndata Zarr export</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../../workflow/analysis/image_ome.html" class="sidebar-item-text sidebar-link">Image OME-TIFF export</a>
+  <a href="../../../workflow/analysis/image_ome.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Image OME-TIFF export</span></a>
   </div>
 </li>
       </ul>
@@ -337,6 +339,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -359,7 +362,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Train a model</h1>
+<h1 class="title">Train a model</h1>
 </div>
 
 <div>
@@ -381,7 +384,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 3, 2023</p>
+      <p class="date">June 27, 2023</p>
     </div>
   </div>
   
@@ -652,19 +655,9 @@ image 9: 9 9 0</code></pre>
 2022-06-14 13:29:12,107 [INFO] not all flows are present, running flow generation for all images
 2022-06-14 13:29:13,048 [INFO] 9 / 9 images in training/annotated folder have labels
 Found 9 images. Using these to create a new model
-2022-06-14 13:29:14,716 [INFO] computing flows for labels</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 56%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████▋                                                                                         | 5/9 [00:03&lt;00:02,  1.44it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>2022-06-14 13:29:18,418 [WARNING] empty masks!</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 9/9 [00:05&lt;00:00,  1.77it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>2022-06-14 13:29:20,358 [WARNING] 1 train images with number of masks less than min_train_masks (5), removing from train set
+2022-06-14 13:29:14,716 [INFO] computing flows for labels
+2022-06-14 13:29:18,418 [WARNING] empty masks!
+2022-06-14 13:29:20,358 [WARNING] 1 train images with number of masks less than min_train_masks (5), removing from train set
 2022-06-14 13:29:20,718 [INFO] &gt;&gt;&gt;&gt; median diameter set to = 30
 2022-06-14 13:29:20,720 [INFO] &gt;&gt;&gt;&gt; mean of training label mask diameters (saved to model) 26.532
 2022-06-14 13:29:20,721 [INFO] &gt;&gt;&gt;&gt; training network with 2 channel input &lt;&lt;&lt;&lt;
@@ -685,19 +678,22 @@ Found 9 images. Using these to create a new model
 2022-06-14 13:29:59,788 [INFO] Epoch 90, Time 39.1s, Loss 0.4069, LR 0.1000
 2022-06-14 13:30:03,684 [INFO] saving network parameters to ./models/Merscope_trained_on_9_images.model</code></pre>
 </div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 56%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████▋                                                                                         | 5/9 [00:03&lt;00:02,  1.44it/s]100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 9/9 [00:05&lt;00:00,  1.77it/s]</code></pre>
+</div>
 </div>
 <section id="use-the-model-to-annoate-the-next-sample" class="level3">
 <h3 class="anchored" data-anchor-id="use-the-model-to-annoate-the-next-sample">Use the model to annoate the next sample</h3>
 <div class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># declare model</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> models.CellposeModel(gpu<span class="op">=</span>use_GPU, </span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>                             pretrained_model<span class="op">=</span>new_model_path)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>diameter <span class="op">=</span> model.diam_labels</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>next_img_no <span class="op">=</span> re.search(<span class="vs">r"[0-9]+"</span>, new_model_path).group(<span class="dv">0</span>)</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>next_img_no <span class="op">=</span> <span class="bu">int</span>(next_img_no)</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>next_img <span class="op">=</span> imgs[next_img_no]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># declare model</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> models.CellposeModel(gpu<span class="op">=</span>use_GPU, </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                             pretrained_model<span class="op">=</span>new_model_path)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>diameter <span class="op">=</span> model.diam_labels</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>next_img_no <span class="op">=</span> re.search(<span class="vs">r"[0-9]+"</span>, new_model_path).group(<span class="dv">0</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>next_img_no <span class="op">=</span> <span class="bu">int</span>(next_img_no)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>next_img <span class="op">=</span> imgs[next_img_no]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>2022-06-14 13:30:45,682 [INFO] &gt;&gt;&gt;&gt; loading model ./models/Merscope_trained_on_9_images.model
 2022-06-14 13:30:45,695 [INFO] ** TORCH CUDA version installed and working. **
@@ -707,27 +703,27 @@ Found 9 images. Using these to create a new model
 </div>
 </div>
 <div class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>masks, flows, styles <span class="op">=</span> model.<span class="bu">eval</span>(next_img, channels<span class="op">=</span>[<span class="dv">2</span>,<span class="dv">3</span>], diameter<span class="op">=</span>diameter, do_3D<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>masks, flows, styles <span class="op">=</span> model.<span class="bu">eval</span>(next_img, channels<span class="op">=</span>[<span class="dv">2</span>,<span class="dv">3</span>], diameter<span class="op">=</span>diameter, do_3D<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">5</span>))</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>plot.show_segmentation(fig, next_img[<span class="dv">1</span>:<span class="dv">3</span>,:,:], masks, flows[<span class="dv">0</span>], channels<span class="op">=</span>[<span class="dv">2</span>,<span class="dv">3</span>])</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">5</span>))</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>plot.show_segmentation(fig, next_img[<span class="dv">1</span>:<span class="dv">3</span>,:,:], masks, flows[<span class="dv">0</span>], channels<span class="op">=</span>[<span class="dv">2</span>,<span class="dv">3</span>])</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><img src="02_train_cellpose_files/figure-html/cell-16-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <div class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>io.masks_flows_to_seg(next_img, masks, flows, diameter, <span class="ss">f"training/next/img_</span><span class="sc">{</span>next_img_no<span class="sc">}</span><span class="ss">.tif"</span>, [<span class="dv">2</span>,<span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>io.masks_flows_to_seg(next_img, masks, flows, diameter, <span class="ss">f"training/next/img_</span><span class="sc">{</span>next_img_no<span class="sc">}</span><span class="ss">.tif"</span>, [<span class="dv">2</span>,<span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
 <section id="train-final-model" class="level2">
 <h2 class="anchored" data-anchor-id="train-final-model">Train final model</h2>
 <div class="cell" data-execution_count="34">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> models.CellposeModel(gpu<span class="op">=</span>use_GPU, model_type<span class="op">=</span><span class="st">'tissuenet'</span>)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>new_model_path <span class="op">=</span> improve_model(model, n_epochs<span class="op">=</span><span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> models.CellposeModel(gpu<span class="op">=</span>use_GPU, model_type<span class="op">=</span><span class="st">'tissuenet'</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>new_model_path <span class="op">=</span> improve_model(model, n_epochs<span class="op">=</span><span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>2022-06-14 13:40:10,647 [INFO] &gt;&gt; tissuenet &lt;&lt; model set to be used
 2022-06-14 13:40:10,655 [INFO] ** TORCH CUDA version installed and working. **
@@ -736,19 +732,9 @@ Found 9 images. Using these to create a new model
 2022-06-14 13:40:11,015 [INFO] not all flows are present, running flow generation for all images
 2022-06-14 13:40:12,054 [INFO] 10 / 10 images in training/annotated folder have labels
 Found 10 images. Using these to create a new model
-2022-06-14 13:40:13,921 [INFO] computing flows for labels</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> 50%|████████████████████████████████████████████████████████████████████████████████████████████████████                                                                                                    | 5/10 [00:03&lt;00:03,  1.43it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>2022-06-14 13:40:17,648 [WARNING] empty masks!</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [00:05&lt;00:00,  1.92it/s]</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>2022-06-14 13:40:19,734 [WARNING] 1 train images with number of masks less than min_train_masks (5), removing from train set
+2022-06-14 13:40:13,921 [INFO] computing flows for labels
+2022-06-14 13:40:17,648 [WARNING] empty masks!
+2022-06-14 13:40:19,734 [WARNING] 1 train images with number of masks less than min_train_masks (5), removing from train set
 2022-06-14 13:40:20,136 [INFO] &gt;&gt;&gt;&gt; median diameter set to = 30
 2022-06-14 13:40:20,137 [INFO] &gt;&gt;&gt;&gt; mean of training label mask diameters (saved to model) 26.578
 2022-06-14 13:40:20,139 [INFO] &gt;&gt;&gt;&gt; training network with 2 channel input &lt;&lt;&lt;&lt;
@@ -868,15 +854,18 @@ Found 10 images. Using these to create a new model
 2022-06-14 13:48:48,052 [INFO] Epoch 990, Time 507.9s, Loss 0.5434, LR 0.0002
 2022-06-14 13:48:52,465 [INFO] saving network parameters to ./models/Merscope_trained_on_10_images.model</code></pre>
 </div>
+<div class="cell-output cell-output-stderr">
+<pre><code> 50%|████████████████████████████████████████████████████████████████████████████████████████████████████                                                                                                    | 5/10 [00:03&lt;00:03,  1.43it/s]100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [00:05&lt;00:00,  1.92it/s]</code></pre>
+</div>
 </div>
 <div class="cell" data-execution_count="35">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>new_model_path</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>new_model_path</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="35">
 <pre><code>'./models/Merscope_trained_on_10_images.model'</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="36">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>model.diam_labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>model.diam_labels</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="36">
 <pre><code>26.578293809596616</code></pre>
 </div>
@@ -1028,9 +1017,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -1095,6 +1098,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -1133,12 +1222,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/spatial\.heeg\.io/);
+      var filterRegex = new RegExp("spatial\.heeg\.io");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
-    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -1165,13 +1254,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-      <div class="nav-footer-center">
-        <ul class="footer-items list-unstyled">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      <ul class="footer-items list-unstyled">
     <li class="nav-item">
     <a class="nav-link" href="../../../about.html">About</a>
   </li>  
 </ul>
-      </div>
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
   </div>
 </footer>
 

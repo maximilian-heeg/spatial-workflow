@@ -1,20 +1,5 @@
 [
   {
-    "listing": "/workflow/cell_segmentation/baysor/index.html",
-    "items": [
-      "/workflow/cell_segmentation/baysor/script.html"
-    ]
-  },
-  {
-    "listing": "/workflow/cell_segmentation/cellpose/index.html",
-    "items": [
-      "/workflow/cell_segmentation/cellpose/create_stack.html",
-      "/workflow/cell_segmentation/cellpose/train_model.html",
-      "/workflow/cell_segmentation/cellpose/run_cellpose.html",
-      "/workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html"
-    ]
-  },
-  {
     "listing": "/workflow/cell_segmentation/anndata/index.html",
     "items": [
       "/workflow/cell_segmentation/anndata/segmentation_plots.html",
@@ -38,6 +23,21 @@
       "/workflow/analysis/umap.html",
       "/workflow/analysis/anndata_zarr.html",
       "/workflow/analysis/image_ome.html"
+    ]
+  },
+  {
+    "listing": "/workflow/cell_segmentation/baysor/index.html",
+    "items": [
+      "/workflow/cell_segmentation/baysor/script.html"
+    ]
+  },
+  {
+    "listing": "/workflow/cell_segmentation/cellpose/index.html",
+    "items": [
+      "/workflow/cell_segmentation/cellpose/create_stack.html",
+      "/workflow/cell_segmentation/cellpose/train_model.html",
+      "/workflow/cell_segmentation/cellpose/run_cellpose.html",
+      "/workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html"
     ]
   }
 ]
