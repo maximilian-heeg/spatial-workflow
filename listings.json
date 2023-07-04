@@ -9,20 +9,20 @@
     ]
   },
   {
-    "listing": "/workflow/auxiliary/index.html",
-    "items": [
-      "/workflow/auxiliary/quantify.html",
-      "/workflow/auxiliary/validation.html",
-      "/workflow/auxiliary/Combine_Transcripts.html"
-    ]
-  },
-  {
     "listing": "/workflow/analysis/index.html",
     "items": [
       "/workflow/analysis/qc.html",
       "/workflow/analysis/umap.html",
       "/workflow/analysis/anndata_zarr.html",
       "/workflow/analysis/image_ome.html"
+    ]
+  },
+  {
+    "listing": "/workflow/auxiliary/index.html",
+    "items": [
+      "/workflow/auxiliary/quantify.html",
+      "/workflow/auxiliary/validation.html",
+      "/workflow/auxiliary/Combine_Transcripts.html"
     ]
   },
   {
