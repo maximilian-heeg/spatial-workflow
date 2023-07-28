@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Maximilian Heeg">
-<meta name="dcterms.date" content="2023-07-25">
+<meta name="dcterms.date" content="2023-07-28">
 <meta name="description" content="Run MAGIC and export the anndata in the zarr format for the Vitessce browser">
 
 <title>Spatial workflow - Anndata Zarr export</title>
@@ -347,6 +347,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#run-magic" id="toc-run-magic" class="nav-link active" data-scroll-target="#run-magic">Run Magic</a></li>
+  <li><a href="#export-the-transcripts" id="toc-export-the-transcripts" class="nav-link" data-scroll-target="#export-the-transcripts">Export the transcripts</a></li>
+  <li><a href="#prepare-export-of-the-polygons" id="toc-prepare-export-of-the-polygons" class="nav-link" data-scroll-target="#prepare-export-of-the-polygons">Prepare export of the polygons</a></li>
+  <li><a href="#export-the-anndata-as-a-zarr" id="toc-export-the-anndata-as-a-zarr" class="nav-link" data-scroll-target="#export-the-anndata-as-a-zarr">Export the Anndata as a zarr</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/maximilian-heeg/spatial-workflow/blob/main/workflow/analysis/vitessce_adata_zarr.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/maximilian-heeg/spatial-workflow/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -377,7 +380,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 25, 2023</p>
+      <p class="date">July 28, 2023</p>
     </div>
   </div>
   
@@ -401,6 +404,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="run-magic" class="level2">
 <h2 class="anchored" data-anchor-id="run-magic">Run Magic</h2>
+<p>Just to make the sparse expression that we got in the Merscope runs look a little bit nicer</p>
 <div class="cell" data-execution_count="34">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>adata</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="34">
@@ -493,13 +497,24 @@ Calculated MAGIC in 744.78 seconds.</code></pre>
 <div class="cell" data-execution_count="42">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>adata <span class="op">=</span> adata</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="export-the-transcripts" class="level2">
+<h2 class="anchored" data-anchor-id="export-the-transcripts">Export the transcripts</h2>
 <div class="cell" data-execution_count="43">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>scale <span class="op">=</span> <span class="fl">3.08657</span>      </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this is the scale to transport the microns to pixels.</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the value is a result of </span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># - the micron_to_mosaic_pixel_transform.csv</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># - the factor of how I downsamples the images to save some storage</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   a factor of 3 still gave us pretty good resolution of the images</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>scale <span class="op">=</span> <span class="fl">3.08657</span>      </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="44">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># apply the scale</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># and round to two decimals to make the file a little smaller (saves ~250MB)</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>adata.uns[<span class="st">'points'</span>].groupby(<span class="st">'gene'</span>).<span class="bu">apply</span>(<span class="kw">lambda</span> x: (x[[<span class="st">'x'</span>, <span class="st">'y'</span>]].to_numpy()<span class="op">*</span>scale).<span class="bu">round</span>(<span class="dv">2</span>)).to_json(<span class="st">'/home/max/Desktop/vitesse/data/json/molecules.json'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># as I said, this is some of the limiting functions of vitessce.</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># I was not able to import the transscripts as a zarr file, and therefore did not include it in the browser that I am hosting on github.</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># it just took too long to load the 500 MB transcript file.</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>adata.uns[<span class="st">'points'</span>].groupby(<span class="st">'gene'</span>).<span class="bu">apply</span>(<span class="kw">lambda</span> x: (x[[<span class="st">'x'</span>, <span class="st">'y'</span>]].to_numpy()<span class="op">*</span>scale).<span class="bu">round</span>(<span class="dv">2</span>)).to_json(<span class="st">'/home/max/Desktop/vitesse/data/json/molecules.json'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="45">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> zarr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -507,12 +522,11 @@ Calculated MAGIC in 744.78 seconds.</code></pre>
 <div class="cell" data-execution_count="46">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>adata.obs[<span class="st">'leiden'</span>] <span class="op">=</span> adata.obs.leiden.astype(<span class="st">'int32'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="47">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># adata.obs = adata.obs.rename(columns={"cell type": "cell_type"})</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># adata.obs['cell_type'] = adata.obs['cell_type'].astype('S16')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+</section>
+<section id="prepare-export-of-the-polygons" class="level2">
+<h2 class="anchored" data-anchor-id="prepare-export-of-the-polygons">Prepare export of the polygons</h2>
 <div class="cell" data-execution_count="57">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>gpd.GeoSeries.from_wkt(np.array(adata.obs.cell_shape))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>gpd.GeoSeries.from_wkt(np.array(adata.obs.cell_shape))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="57">
 <pre><code>0         POLYGON ((121.907 1410.945, 125.958 1414.014, ...
 1         POLYGON ((119.717 1412.486, 118.002 1416.133, ...
@@ -529,39 +543,43 @@ Length: 105262, dtype: geometry</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="54">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shapely.geometry <span class="im">import</span> Polygon, mapping</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> gpd.GeoSeries.from_wkt(np.array(adata.obs.cell_shape)).<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.array(mapping(x)[<span class="st">'coordinates'</span>])[<span class="dv">0</span>].astype(<span class="st">'float32'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shapely.geometry <span class="im">import</span> Polygon, mapping</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>test <span class="op">=</span> gpd.GeoSeries.from_wkt(np.array(adata.obs.cell_shape)).<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.array(mapping(x)[<span class="st">'coordinates'</span>])[<span class="dv">0</span>].astype(<span class="st">'float32'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>TypeError: Non geometry data passed to GeoSeries constructor, received data of dtype 'category'</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>adata.uns[<span class="st">'poly'</span>] <span class="op">=</span> [np.resize(t, (<span class="dv">24</span>,<span class="dv">2</span>))<span class="op">*</span>scale <span class="cf">for</span> t <span class="kw">in</span> test]</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co">#adata.uns['poly'] = test</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for some reason I was not able to save the anndata objectc as a zarr if </span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the size of the polygons (cell boundaries) were not the same.</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># so I resized them here to make it consistent, but this unfortunately creates some artifacts in the browser.</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># But it is the only way I could make it work</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>adata.uns[<span class="st">'poly'</span>] <span class="op">=</span> [np.resize(t, (<span class="dv">24</span>,<span class="dv">2</span>))<span class="op">*</span>scale <span class="cf">for</span> t <span class="kw">in</span> test]</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co">#adata.uns['poly'] = test</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>adata.uns[<span class="st">'poly'</span>] <span class="op">=</span>  adata.uns[<span class="st">'poly'</span>].copy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>adata.uns[<span class="st">'poly'</span>] <span class="op">=</span>  adata.uns[<span class="st">'poly'</span>].copy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>adata.obsm[<span class="st">'spatial'</span>] <span class="op">=</span> adata.obsm[<span class="st">'spatial'</span>]<span class="op">*</span>scale</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>adata.obsm[<span class="st">'spatial'</span>] <span class="op">=</span> adata.obsm[<span class="st">'spatial'</span>].copy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>adata.obsm[<span class="st">'spatial'</span>] <span class="op">=</span> adata.obsm[<span class="st">'spatial'</span>]<span class="op">*</span>scale</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>adata.obsm[<span class="st">'spatial'</span>] <span class="op">=</span> adata.obsm[<span class="st">'spatial'</span>].copy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>adata <span class="op">=</span> adata.copy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>adata <span class="op">=</span> adata.copy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>dims <span class="op">=</span> [p.shape[<span class="dv">0</span>] <span class="cf">for</span> p <span class="kw">in</span> adata.uns[<span class="st">'poly'</span>]]</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>[d <span class="cf">for</span> d <span class="kw">in</span> dims <span class="cf">if</span> d <span class="op">&lt;</span> <span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>dims <span class="op">=</span> [p.shape[<span class="dv">0</span>] <span class="cf">for</span> p <span class="kw">in</span> adata.uns[<span class="st">'poly'</span>]]</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>[d <span class="cf">for</span> d <span class="kw">in</span> dims <span class="cf">if</span> d <span class="op">&lt;</span> <span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="export-the-anndata-as-a-zarr" class="level2">
+<h2 class="anchored" data-anchor-id="export-the-anndata-as-a-zarr">Export the Anndata as a zarr</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>adata.write_zarr(<span class="st">'/home/max/Desktop/vitesse/data/merscope.zarr'</span>, [adata.shape[<span class="dv">0</span>], <span class="dv">10</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>adata.obsm[<span class="st">'spatial'</span>][<span class="dv">1362</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>adata.write_zarr(<span class="st">'/home/max/Desktop/vitesse/data/merscope.zarr'</span>, [adata.shape[<span class="dv">0</span>], <span class="dv">10</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
