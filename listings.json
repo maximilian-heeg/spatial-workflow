@@ -1,10 +1,20 @@
 [
   {
-    "listing": "/workflow/auxiliary/index.html",
+    "listing": "/workflow/analysis/index.html",
     "items": [
-      "/workflow/auxiliary/quantify.html",
-      "/workflow/auxiliary/validation.html",
-      "/workflow/auxiliary/Combine_Transcripts.html"
+      "/workflow/analysis/qc.html",
+      "/workflow/analysis/umap.html",
+      "/workflow/analysis/anndata_zarr.html",
+      "/workflow/analysis/image_ome.html"
+    ]
+  },
+  {
+    "listing": "/workflow/cell_segmentation/cellpose/index.html",
+    "items": [
+      "/workflow/cell_segmentation/cellpose/create_stack.html",
+      "/workflow/cell_segmentation/cellpose/train_model.html",
+      "/workflow/cell_segmentation/cellpose/run_cellpose.html",
+      "/workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html"
     ]
   },
   {
@@ -23,21 +33,11 @@
     ]
   },
   {
-    "listing": "/workflow/analysis/index.html",
+    "listing": "/workflow/auxiliary/index.html",
     "items": [
-      "/workflow/analysis/qc.html",
-      "/workflow/analysis/umap.html",
-      "/workflow/analysis/anndata_zarr.html",
-      "/workflow/analysis/image_ome.html"
-    ]
-  },
-  {
-    "listing": "/workflow/cell_segmentation/cellpose/index.html",
-    "items": [
-      "/workflow/cell_segmentation/cellpose/create_stack.html",
-      "/workflow/cell_segmentation/cellpose/train_model.html",
-      "/workflow/cell_segmentation/cellpose/run_cellpose.html",
-      "/workflow/cell_segmentation/cellpose/assing_transcripts_to_cell.html"
+      "/workflow/auxiliary/quantify.html",
+      "/workflow/auxiliary/validation.html",
+      "/workflow/auxiliary/Combine_Transcripts.html"
     ]
   }
 ]
